@@ -65,6 +65,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.5"
+  drop_down_list:
+    dependency: "direct main"
+    description:
+      name: drop_down_list
+      sha256: ffb54a1464d8c051f9ec7be6c5e86a4bd59297fe8a93f2942a91a96197d0abc2
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.5"
+  dropdown_button2:
+    dependency: "direct main"
+    description:
+      name: dropdown_button2
+      sha256: "83c54a5022f898d63e3abe21240b64b937e676103207287e6705d3f9bb04d654"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.3.6"
   fake_async:
     dependency: transitive
     description:
@@ -99,14 +115,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.6.5"
-  intl:
-    dependency: transitive
-    description:
-      name: intl
-      sha256: "3bc132a9dbce73a7e4a21a17d06e1878839ffbf975568bc875c60537824b0c4d"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.18.1"
   js:
     dependency: transitive
     description:
@@ -208,22 +216,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.0"
-  syncfusion_flutter_core:
-    dependency: transitive
-    description:
-      name: syncfusion_flutter_core
-      sha256: "83e0937c1d747003e7d2514d093a28101953737a155ad7a1465006a95aa78cd4"
-      url: "https://pub.dev"
-    source: hosted
-    version: "22.1.39"
-  syncfusion_flutter_datepicker:
-    dependency: "direct main"
-    description:
-      name: syncfusion_flutter_datepicker
-      sha256: fb1af72981e19b3bad4f07bc16a6235e5b998a4755852b9fed49a93ce556b36b
-      url: "https://pub.dev"
-    source: hosted
-    version: "22.1.39"
   term_glyph:
     dependency: transitive
     description:
@@ -266,3 +258,4 @@ packages:
     version: "2.1.4"
 sdks:
   dart: ">=3.0.0 <4.0.0"
+  flutter: ">=3.0.0"

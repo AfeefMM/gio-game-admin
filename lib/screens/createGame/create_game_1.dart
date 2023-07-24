@@ -5,6 +5,7 @@ import 'package:gio_game_admin/screens/createGame/createWidgets/textCreateField.
 import '../../controllers/text_controller.dart';
 import '../../utils/colours.dart';
 import '../../widgets/textLabel.dart';
+import 'createWidgets/areaDropDown.dart';
 import 'createWidgets/createDateWid.dart';
 
 class CreateGamePageStep1 extends StatefulWidget {
@@ -76,13 +77,15 @@ class _CreateGamePageStep1State extends State<CreateGamePageStep1> {
                     controller: textController.gameNameController),
                 CreateDate(
                     text: "From Date",
-                    controller: textController.gameNameController),
-                CreateFields(
+                    value: "from",
+                    controller: textController.gameFromDateController),
+                CreateDate(
                     text: "To Date",
-                    controller: textController.gameNameController),
-                CreateFields(
-                    text: "Area Selection",
-                    controller: textController.gameNameController),
+                    value: "to",
+                    controller: textController.gameToDateController),
+                AreaDropDownBtn(
+                  controller: textController.shopAreaController,
+                ),
               ],
             )),
           ],
