@@ -22,7 +22,7 @@ class AreaDropDownBtn extends StatefulWidget {
       {Key? key,
       this.color = Colors.black,
       required this.controller,
-      this.value = "",
+      this.value = "Select Area",
       this.overflow = TextOverflow.ellipsis,
       this.fontWeight = FontWeight.w800,
       this.size = 0})
@@ -56,7 +56,7 @@ class _AreaDropDownBtnState extends State<AreaDropDownBtn> {
                 Padding(
                   padding: const EdgeInsets.fromLTRB(25, 10, 1, 5),
                   child: TextLabel(
-                    text: "Select Area",
+                    text: widget.value,
                     color: AppColours.blueColour,
                     fontWeight: FontWeight.w400,
                   ),
@@ -112,12 +112,18 @@ class _AreaDropDownBtnState extends State<AreaDropDownBtn> {
                                   }
                                 }
                                 showSnackBar(list.toString());
+                                setState(() {
+                                  widget.controller.text = list[0].toString();
+                                  widget.value = list[0].toString();
+                                });
+
+                                print(widget.controller.text);
                               },
                               enableMultipleSelection: false,
                             ),
                           ).showModal(context);
                         },
-                        icon: const Icon(Icons.area_chart))
+                        icon: const Icon(Icons.arrow_drop_down))
                   ]),
                 )
               ],
@@ -154,6 +160,7 @@ class _AreaDropDownBtnState extends State<AreaDropDownBtn> {
 
       var query = await db.query('SELECT * from shop_areas;');
 
+      items.clear();
       for (int i = 0; i < query.numOfRows; i++) {
         //items.add(query.rows[i]['area_name']);
         items.add(SelectedListItem(name: query.rows[i]['area_name']));
