@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:gio_game_admin/utils/dimensions.dart';
 import 'package:mysql_utils/mysql_utils.dart';
 
 import 'package:gio_game_admin/screens/reviewGame/review_tLabel.dart';
@@ -29,7 +30,7 @@ var staffName = Get.arguments[0];
 
 //final gameData = <List<String>>[[]];
 
-late var gameName, fromDate, toDate, gameArea, listOfShops;
+late var gameName, fromDate, toDate, gameArea, listOfShops, listOfVals;
 
 class _ReviewPageState extends State<ReviewPage> {
   @override
@@ -77,7 +78,8 @@ class _ReviewPageState extends State<ReviewPage> {
       toDate = "";
       gameArea = "";
       listOfShops = [];
-      print("title: " + widget.title);
+      listOfVals = [];
+
       var row = await db.query('SELECT * from game_file;');
       var numOfGames = row.numOfRows; //number of games
       for (int i = 0; i < numOfGames; i++) {
@@ -87,7 +89,8 @@ class _ReviewPageState extends State<ReviewPage> {
           toDate = row.rows[i]['to_date'];
           gameArea = row.rows[i]['area_name'];
           listOfShops.add(row.rows[i]['store_code']);
-          // print(row.rows[i]['store_code']);
+          listOfVals.add(row.rows[i]['game_value']);
+
           // listOfShops.add(row.rows[i]['store_code']) = ; //need area name
         }
       }
@@ -157,6 +160,69 @@ class _ReviewPageState extends State<ReviewPage> {
                 ReviewText(text: fromDate, textTitle: "From Date: "),
                 ReviewText(text: toDate, textTitle: "To Date: "),
                 ReviewText(text: gameArea, textTitle: "Area: "),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 5, 1, 5),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          TextLabel(
+                            text: "Shops:",
+                            color: AppColours.blueColour,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 5, 1, 5),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Container(
+                        height: 300,
+                        width: Dimensions.screenWidth - 50,
+                        child: GridView.count(
+                          // Create a grid with 2 columns. If you change the scrollDirection to
+                          // horizontal, this produces 2 rows.
+                          crossAxisCount: 2,
+                          // Generate 100 widgets that display their index in the List.
+                          children: List.generate(listOfShops.length, (index) {
+                            return Column(
+                              children: [
+                                // Text(code.customerName)
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(5, 1, 5, 1),
+                                  child: Row(
+                                    children: [
+                                      TextLabel(
+                                        text: listOfShops[index],
+                                        color: AppColours.blueColour,
+                                        size: 18,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      const Text(" - "),
+                                      TextLabel(
+                                        text: listOfVals[index].toString(),
+                                        color: AppColours.blueColour,
+                                        size: 18,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            );
+                          }),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
                 const Spacer()
               ],
             );

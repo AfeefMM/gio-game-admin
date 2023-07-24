@@ -23,9 +23,9 @@ class ReviewText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(1, 20, 1, 20),
+      padding: const EdgeInsets.fromLTRB(20, 20, 1, 20),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -37,14 +37,17 @@ class ReviewText extends StatelessWidget {
               ),
             ],
           ),
-          Column(
-            children: [
-              TextLabel(
-                text: text,
-                color: AppColours.blueColour,
-                fontWeight: FontWeight.w400,
-              ),
-            ],
+          Padding(
+            padding: const EdgeInsets.fromLTRB(1, 5, 20, 5),
+            child: Column(
+              children: [
+                TextLabel(
+                  text: text,
+                  color: AppColours.blueColour,
+                  fontWeight: FontWeight.w400,
+                ),
+              ],
+            ),
           ),
         ],
       ),
