@@ -113,7 +113,6 @@ class _ViewGamesPageState extends State<ViewGamesPage> {
 
         // }
       }
-      print(gameNames.toString());
 
       // }
       db.close();
@@ -172,6 +171,7 @@ class _ViewGamesPageState extends State<ViewGamesPage> {
                 itemCount: gameNames.length,
                 itemBuilder: (context, index) {
                   String title = gameNames[index].toString();
+
                   String toDate = gameToDates[index].toString();
                   String fromDate = gameFromDates[index].toString();
                   //print("game name: " + index.toString() + title);
@@ -182,7 +182,11 @@ class _ViewGamesPageState extends State<ViewGamesPage> {
                       // print("tapped score: " + score); //this works well
                       //pass the score and base value of game
                       // currGameID = gameIDs[index]; //get game ID
-                      Get.to(() => ReviewPage(), arguments: [staffName, title]);
+                      Get.to(
+                          () => ReviewPage(
+                                title: title,
+                              ),
+                          arguments: [staffName]);
                     },
                     child: GameCard(
                       title: title,

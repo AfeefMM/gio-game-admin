@@ -1,9 +1,11 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mysql_utils/mysql_utils.dart';
+
 import 'package:gio_game_admin/screens/reviewGame/review_tLabel.dart';
 import 'package:gio_game_admin/screens/view_games.dart';
 import 'package:gio_game_admin/widgets/menu_btn.dart';
-import 'package:mysql_utils/mysql_utils.dart';
 
 import '../../controllers/text_controller.dart';
 import '../../utils/colours.dart';
@@ -14,12 +16,17 @@ import '../login.dart';
 class ReviewPage extends StatefulWidget {
   @override
   State<ReviewPage> createState() => _ReviewPageState();
+  String title;
+  ReviewPage({
+    Key? key,
+    required this.title,
+  }) : super(key: key);
 }
 
 final textController = Get.put(TextController());
 
 var staffName = Get.arguments[0];
-var title = Get.arguments[1];
+
 //final gameData = <List<String>>[[]];
 
 late var gameName, fromDate, toDate, gameArea, listOfShops;
@@ -70,20 +77,20 @@ class _ReviewPageState extends State<ReviewPage> {
       toDate = "";
       gameArea = "";
       listOfShops = [];
+      print("title: " + widget.title);
       var row = await db.query('SELECT * from game_file;');
       var numOfGames = row.numOfRows; //number of games
       for (int i = 0; i < numOfGames; i++) {
-        if (row.rows[i]['game_name'] == title) {
+        if (row.rows[i]['game_name'] == widget.title) {
           gameName = row.rows[i]['game_name'];
           fromDate = row.rows[i]['from_date'];
           toDate = row.rows[i]['to_date'];
           gameArea = row.rows[i]['area_name'];
           listOfShops.add(row.rows[i]['store_code']);
+          // print(row.rows[i]['store_code']);
           // listOfShops.add(row.rows[i]['store_code']) = ; //need area name
         }
       }
-
-      print(listOfShops.toString());
 
       db.close();
       //print(row.rows[0]); //{game_id: 1, staff_id: 1012, qty: 2, amount: 350.0, score: 1}
