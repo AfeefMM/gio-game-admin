@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gio_game_admin/screens/createGame/createWidgets/textCreateField.dart';
-import 'package:gio_game_admin/widgets/menu_btn.dart';
 
 import '../../controllers/text_controller.dart';
 import '../../utils/colours.dart';
 import '../../widgets/textLabel.dart';
+import 'createWidgets/createDateWid.dart';
 
 class CreateGamePageStep1 extends StatefulWidget {
   @override
@@ -74,7 +74,7 @@ class _CreateGamePageStep1State extends State<CreateGamePageStep1> {
                 CreateFields(
                     text: "Game Name",
                     controller: textController.gameNameController),
-                CreateFields(
+                CreateDate(
                     text: "From Date",
                     controller: textController.gameNameController),
                 CreateFields(
