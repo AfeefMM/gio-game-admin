@@ -5,10 +5,10 @@ import 'package:get/get_state_manager/get_state_manager.dart';
 class TextController extends GetxController {
   TextEditingController staffIDController = TextEditingController();
   TextEditingController staffPassController = TextEditingController();
-  TextEditingController customerNameController = TextEditingController();
-  TextEditingController customerNumberController = TextEditingController();
-  TextEditingController productImgController = TextEditingController();
-  TextEditingController currentIndexController = TextEditingController();
+  TextEditingController gameNameController = TextEditingController();
+  TextEditingController gameFromDateController = TextEditingController();
+  TextEditingController gameToDateController = TextEditingController();
+  TextEditingController shopAreaController = TextEditingController();
 
   RxString controllerText = ''.obs;
 
@@ -21,17 +21,17 @@ class TextController extends GetxController {
     staffPassController.addListener(() {
       controllerText.value = staffPassController.text;
     });
-    customerNameController.addListener(() {
-      controllerText.value = customerNameController.text;
+    gameNameController.addListener(() {
+      controllerText.value = gameNameController.text;
     });
-    customerNumberController.addListener(() {
-      controllerText.value = customerNumberController.text;
+    gameFromDateController.addListener(() {
+      controllerText.value = gameFromDateController.text;
     });
-    productImgController.addListener(() {
-      controllerText.value = productImgController.text;
+    gameToDateController.addListener(() {
+      controllerText.value = gameToDateController.text;
     });
-    currentIndexController.addListener(() {
-      controllerText.value = productImgController.text;
+    shopAreaController.addListener(() {
+      controllerText.value = shopAreaController.text;
     });
   }
 }
