@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:gio_game_admin/screens/view_games.dart';
 import 'package:gio_game_admin/widgets/textLabel.dart';
 
 import 'package:mysql_utils/mysql_utils.dart';
@@ -17,10 +18,12 @@ class MenuBtn extends StatefulWidget {
   TextOverflow overflow;
   FontWeight fontWeight;
   String value;
+  String type;
   MenuBtn(
       {Key? key,
       this.color = AppColours.blueColour,
       required this.text,
+      required this.type,
       this.value = "",
       this.overflow = TextOverflow.ellipsis,
       this.fontWeight = FontWeight.w800,
@@ -48,7 +51,11 @@ class _MenuBtnState extends State<MenuBtn> {
               width: 225,
               height: 75,
               child: OutlinedButton(
-                onPressed: () async {},
+                onPressed: () {
+                  if (widget.type == "view") {
+                    Get.to(() => ViewGamesPage());
+                  }
+                },
                 style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.fromLTRB(1, 13, 1, 13),
                     shape: RoundedRectangleBorder(
@@ -60,6 +67,7 @@ class _MenuBtnState extends State<MenuBtn> {
                   color: AppColours.blueColour,
                   fontWeight: FontWeight.bold,
                   text: widget.text,
+                  size: 18,
                 ),
               ),
             ),

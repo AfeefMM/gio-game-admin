@@ -80,7 +80,10 @@ class _MenuPageState extends State<MenuPage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  MenuBtn(text: "Create Game"),
+                  MenuBtn(
+                    text: "Create Game",
+                    type: "create",
+                  ),
                 ],
               ),
             ),
@@ -89,7 +92,10 @@ class _MenuPageState extends State<MenuPage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  MenuBtn(text: "View Game"),
+                  MenuBtn(
+                    text: "View Game",
+                    type: "view",
+                  ),
                 ],
               ),
             ),
