@@ -87,13 +87,13 @@ class _ViewGamesPageState extends State<ViewGamesPage> {
       var query = await db.query('select * from game_file');
       numOfGames = query.numOfRows;
 
-      gameNames.add(query.rows[0]['game_name']);
-      gameIDs.add(query.rows[0]['game_id']);
-      gameFromDates.add(query.rows[0]['from_date']);
-      gameToDates.add(query.rows[0]['to_date']);
-      gameVal.add(query.rows[0]['game_value']);
+      // gameNames.add(query.rows[0]['game_name']);
+      // gameIDs.add(query.rows[0]['game_id']);
+      // gameFromDates.add(query.rows[0]['from_date']);
+      // gameToDates.add(query.rows[0]['to_date']);
+      // gameVal.add(query.rows[0]['game_value']);
 
-      for (int j = 1; j < query.numOfRows; j++) {
+      for (int j = 0; j < query.numOfRows; j++) {
         // if (query.rows[j]['game_id'] == gameID) {
         bool nameExists = false;
         for (int i = 0; i < gameNames.length; i++) {
@@ -174,7 +174,7 @@ class _ViewGamesPageState extends State<ViewGamesPage> {
 
                   String toDate = gameToDates[index].toString();
                   String fromDate = gameFromDates[index].toString();
-                  //print("game name: " + index.toString() + title);
+                  print("game name: " + index.toString() + title);
                   // String score = gameScores[index].toString();
 
                   return GestureDetector(
