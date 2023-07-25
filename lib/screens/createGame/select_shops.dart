@@ -34,7 +34,7 @@ class _SelectShopsPageState extends State<SelectShopsPage> {
   @override
   void initState() {
     // TODO: implement initState
-
+    textController.isNumber = true;
     super.initState();
   }
 
@@ -114,6 +114,7 @@ class _SelectShopsPageState extends State<SelectShopsPage> {
                             onPressed: () async {
                               //onto next page
                               Get.to(() => CreateReviewPage());
+                              textController.isNumber = false;
                             },
                             style: ElevatedButton.styleFrom(
                                 padding:

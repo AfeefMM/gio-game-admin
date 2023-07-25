@@ -19,6 +19,8 @@ class TextController extends GetxController {
   bool isToSelected = false;
   DateTime toDate = DateTime(2017, 9, 7, 17);
 
+  bool isNumber = false;
+
   Rx<List<ShopModel>> shops = Rx<List<ShopModel>>([]);
   late ShopModel shopModel;
   var shopCount = 0.obs;

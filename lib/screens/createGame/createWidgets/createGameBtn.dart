@@ -107,6 +107,8 @@ class _CreateGameBtnState extends State<CreateGameBtn> {
                     var insertGame = await db.query(
                         "INSERT INTO gio_game.game_file (game_name, from_date, to_date, store_code, game_value, area_name)" +
                             "VALUES('${textController.gameNameController.text}', '${textController.gameFromDateController.text}', '${textController.gameToDateController.text}', '${textController.shops.value.elementAt(i).shopName}', ${textController.shops.value.elementAt(i).shopValue}, '${textController.shopAreaController.text}');");
+                    Get.to(() => MenuPage(),
+                        arguments: textController.staffNameController.text);
                     print(insertGame.toString());
                   }
 
@@ -201,8 +203,6 @@ class _CreateGameBtnState extends State<CreateGameBtn> {
 
                 _isDialogShowing =
                     false; // set it `false` since dialog is closed
-                Get.to(() => MenuPage(),
-                    arguments: textController.staffNameController.text);
               },
             ),
           ],

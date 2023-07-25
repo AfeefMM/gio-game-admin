@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:gio_game_admin/model/shop_model.dart';
 import 'package:gio_game_admin/screens/login.dart';
@@ -40,6 +41,9 @@ class TextF extends StatelessWidget {
       child: SizedBox(
         width: size,
         child: TextField(
+          inputFormatters: textController.isNumber
+              ? <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly]
+              : [FilteringTextInputFormatter.singleLineFormatter],
           onEditingComplete: () {
             if (controller != null) {
               if (text == "0") {
