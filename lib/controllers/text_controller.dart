@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 
+import '../model/shop_model.dart';
+
 class TextController extends GetxController {
   TextEditingController staffIDController = TextEditingController();
   TextEditingController staffPassController = TextEditingController();
@@ -9,6 +11,10 @@ class TextController extends GetxController {
   TextEditingController gameFromDateController = TextEditingController();
   TextEditingController gameToDateController = TextEditingController();
   TextEditingController shopAreaController = TextEditingController();
+
+  Rx<List<ShopModel>> shops = Rx<List<ShopModel>>([]);
+  late ShopModel shopModel;
+  var shopCount = 0.obs;
 
   RxString controllerText = ''.obs;
 
@@ -33,5 +39,11 @@ class TextController extends GetxController {
     shopAreaController.addListener(() {
       controllerText.value = shopAreaController.text;
     });
+  }
+
+  addShopValue(String name, String value) {
+    shopModel = ShopModel(shopName: name, shopValue: value);
+    shops.value.add(shopModel);
+    shopCount.value = shops.value.length;
   }
 }

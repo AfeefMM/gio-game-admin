@@ -55,6 +55,9 @@ class _MenuBtnState extends State<MenuBtn> {
                   if (widget.type == "view") {
                     Get.to(() => ViewGamesPage());
                   }
+                  if (widget.type == "create") {
+                    Get.to(() => ViewGamesPage());
+                  }
                 },
                 style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.fromLTRB(1, 13, 1, 13),

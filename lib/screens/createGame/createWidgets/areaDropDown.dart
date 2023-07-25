@@ -111,13 +111,13 @@ class _AreaDropDownBtnState extends State<AreaDropDownBtn> {
                                     list.add(item.name);
                                   }
                                 }
-                                showSnackBar(list.toString());
+                                //showSnackBar(list.toString());
                                 setState(() {
                                   widget.controller.text = list[0].toString();
                                   widget.value = list[0].toString();
                                 });
 
-                                print(widget.controller.text);
+                                // print(widget.controller.text);
                               },
                               enableMultipleSelection: false,
                             ),
