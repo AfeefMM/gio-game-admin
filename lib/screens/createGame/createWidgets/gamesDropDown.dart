@@ -56,7 +56,7 @@ class _GameNameDropDownBtnState extends State<GameNameDropDownBtn> {
                 Padding(
                   padding: const EdgeInsets.fromLTRB(10, 10, 1, 5),
                   child: TextLabel(
-                    text: selectedVal,
+                    text: textController.gameNameController.text,
                     color: AppColours.blueColour,
                     fontWeight: FontWeight.w500,
                   ),
@@ -72,6 +72,7 @@ class _GameNameDropDownBtnState extends State<GameNameDropDownBtn> {
                           vertical: 0.0, horizontal: 16),
                       child: Text(value),
                     ),
+
                     toggledChild: Container(
                       child: normalChildButton,
                     ),

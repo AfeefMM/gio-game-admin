@@ -16,6 +16,7 @@ class TextController extends GetxController {
 
   DateTime fromDate = DateTime(2017, 9, 7, 17);
   bool isFromSelected = false;
+  bool isToSelected = false;
   DateTime toDate = DateTime(2017, 9, 7, 17);
 
   Rx<List<ShopModel>> shops = Rx<List<ShopModel>>([]);

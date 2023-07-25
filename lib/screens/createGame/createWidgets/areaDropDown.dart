@@ -1,14 +1,11 @@
 import 'package:drop_down_list/drop_down_list.dart';
 import 'package:drop_down_list/model/selected_list_item.dart';
-import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:gio_game_admin/screens/login.dart';
 import 'package:gio_game_admin/utils/colours.dart';
-import 'package:gio_game_admin/widgets/textF.dart';
 import 'package:gio_game_admin/widgets/textLabel.dart';
 import 'package:mysql_utils/mysql_utils.dart';
 
-import '../../../utils/dimensions.dart';
 import '../../../utils/sql_data.dart';
 
 class AreaDropDownBtn extends StatefulWidget {

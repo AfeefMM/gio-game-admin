@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:gio_game_admin/screens/createGame/createWidgets/textCreateField.dart';
 
 import '../../controllers/text_controller.dart';
 import '../../utils/colours.dart';
@@ -23,6 +22,12 @@ class _CreateGamePageStepState extends State<CreateGamePageStep> {
   @override
   void initState() {
     // TODO: implement initState
+    textController.gameNameController.clear();
+    textController.gameFromDateController.clear();
+    textController.gameToDateController.clear();
+    textController.shops.value.clear();
+    textController.isFromSelected = false;
+    textController.isToSelected = false;
 
     super.initState();
   }
@@ -37,11 +42,6 @@ class _CreateGamePageStepState extends State<CreateGamePageStep> {
   @override
   Widget build(BuildContext context) {
     //getSQLData();
-    textController.gameNameController.clear();
-    textController.gameFromDateController.clear();
-    textController.gameToDateController.clear();
-    textController.shops.value.clear();
-    textController.isFromSelected = false;
 
     return Scaffold(
       appBar: AppBar(
@@ -113,7 +113,9 @@ class _CreateGamePageStepState extends State<CreateGamePageStep> {
                               textController.gameFromDateController.text !=
                                   "" &&
                               textController.gameFromDateController.text !=
-                                  "") {
+                                  "" &&
+                              textController.shopAreaController.text != "" &&
+                              compareDates()) {
                             if (textController.shopAreaController.text != "") {
                               Get.to(() => SelectShopsPage(
                                     areaName:
@@ -121,7 +123,11 @@ class _CreateGamePageStepState extends State<CreateGamePageStep> {
                                   ));
                             }
                           } else {
-                            _showDialog("Missing fields, enter all details");
+                            if (!compareDates()) {
+                              _showDialog("To date cannot be before From date");
+                            } else {
+                              _showDialog("Missing fields, enter all details");
+                            }
                           }
                         },
                         style: ElevatedButton.styleFrom(
@@ -149,6 +155,18 @@ class _CreateGamePageStepState extends State<CreateGamePageStep> {
         ),
       ),
     );
+  }
+
+  bool compareDates() {
+    var fromD = textController.fromDate;
+    var toD = textController.toDate;
+    if (fromD.compareTo(toD) < 0) {
+      print("is lesser");
+      return true;
+    } else if (fromD.compareTo(toD) >= 0) {
+      return false;
+    }
+    return false;
   }
 
   // bool dateCompare(String from, String to) {

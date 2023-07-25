@@ -62,7 +62,9 @@ class _CreateDateState extends State<CreateDate> {
               children: [
                 //make datepicker popup
                 TextLabel(
-                  text: "${selectedDate.toLocal()}".split(' ')[0],
+                  text: textController.isFromSelected
+                      ? "${selectedDate.toLocal()}".split(' ')[0]
+                      : "",
                   color: AppColours.blueColour,
                   fontWeight: FontWeight.w600,
                 ),
@@ -70,7 +72,7 @@ class _CreateDateState extends State<CreateDate> {
                     onPressed: () {
                       _selectDate(context);
                     },
-                    icon: Icon(Icons.calendar_month_outlined))
+                    icon: Icon(Icons.calendar_month_outlined)),
               ],
             ),
           )
@@ -101,6 +103,7 @@ class _CreateDateState extends State<CreateDate> {
         }
         if (widget.value == 'to') {
           textController.toDate = selectedDate;
+          textController.isToSelected = true;
         }
         widget.controller.text = "${selectedDate.toLocal()}".split(' ')[0];
       });
