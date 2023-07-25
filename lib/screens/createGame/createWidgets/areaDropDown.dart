@@ -166,7 +166,7 @@ class _AreaDropDownBtnState extends State<AreaDropDownBtn> {
       for (int i = 0; i < query.numOfRows; i++) {
         //items.add(query.rows[i]['area_name']);
         items.add(SelectedListItem(name: query.rows[i]['area_name']));
-        textController.addShopValue(query.rows[i]['area_name'], 0);
+        //textController.addShopValue(query.rows[i]['area_name'], 0);
       }
 
       db.close();

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:gio_game_admin/model/shop_model.dart';
 import 'package:gio_game_admin/screens/login.dart';
+import '../controllers/text_controller.dart';
 import '../utils/colours.dart';
 import '../utils/dimensions.dart';
 
@@ -27,6 +29,7 @@ class TextF extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textController = Get.put(TextController());
     bool pass = false;
     if (text == "Password") {
       pass = true;
@@ -37,10 +40,19 @@ class TextF extends StatelessWidget {
       child: SizedBox(
         width: size,
         child: TextField(
-          onChanged: (valueField) {
-            if (text == "shopVal") {
-              textController.shops.value.insert(index,
-                  ShopModel(shopName: value, shopValue: int.parse(valueField)));
+          onEditingComplete: () {
+            if (controller != null) {
+              if (text == "shopVal") {
+                textController.addShopValue(value, int.parse(controller.text));
+                // textController.shops.value.insert(
+                //     index,
+                //     ShopModel(
+                //         shopName: value,
+                //         shopValue: int.parse(controller.text)));
+
+                print(textController.shops.value.elementAt(0).shopName);
+                print(textController.shops.value.elementAt(0).shopValue);
+              }
             }
           },
           obscureText: pass,

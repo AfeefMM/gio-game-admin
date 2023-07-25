@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:gio_game_admin/screens/createGame/create_review.dart';
 import 'package:gio_game_admin/widgets/textF.dart';
 import 'package:mysql_utils/mysql_utils.dart';
 
@@ -40,6 +41,7 @@ class _SelectShopsPageState extends State<SelectShopsPage> {
   @override
   Widget build(BuildContext context) {
     //getSQLData();
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColours.blueColour,
@@ -110,6 +112,7 @@ class _SelectShopsPageState extends State<SelectShopsPage> {
                           child: OutlinedButton(
                             onPressed: () async {
                               //onto next page
+                              Get.to(() => CreateReviewPage());
                             },
                             style: ElevatedButton.styleFrom(
                                 padding:
@@ -122,7 +125,7 @@ class _SelectShopsPageState extends State<SelectShopsPage> {
                             child: const Padding(
                               padding: EdgeInsets.fromLTRB(10, 1, 10, 1),
                               child: Text(
-                                "Select Shops",
+                                "Review",
                                 style: TextStyle(
                                     color: AppColours.btnTextColour,
                                     fontSize: 18,

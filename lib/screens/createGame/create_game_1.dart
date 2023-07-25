@@ -39,6 +39,7 @@ class _CreateGamePageStep1State extends State<CreateGamePageStep1> {
     textController.gameNameController.clear();
     textController.gameFromDateController.clear();
     textController.gameToDateController.clear();
+    textController.shops.value.clear();
 
     return Scaffold(
       appBar: AppBar(
