@@ -132,7 +132,9 @@ class _CreateReviewPageState extends State<CreateReviewPage> {
                     child: GridView.count(
                       // Create a grid with 2 columns. If you change the scrollDirection to
                       // horizontal, this produces 2 rows.
-                      crossAxisCount: 2,
+                      crossAxisCount: 1,
+                      childAspectRatio: (Dimensions.screenWidth / 2) /
+                          (Dimensions.screenHeight / 24),
                       // Generate 100 widgets that display their index in the List.
                       children: List.generate(textController.shops.value.length,
                           (index) {

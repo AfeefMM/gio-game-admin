@@ -168,7 +168,7 @@ class _ReviewPageState extends State<ReviewPage> {
                 Padding(
                   padding: const EdgeInsets.fromLTRB(20, 5, 1, 5),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Container(
                         height: 300,
@@ -176,8 +176,10 @@ class _ReviewPageState extends State<ReviewPage> {
                         child: GridView.count(
                           // Create a grid with 2 columns. If you change the scrollDirection to
                           // horizontal, this produces 2 rows.
-                          crossAxisCount: 2,
+                          crossAxisCount: 1,
                           padding: EdgeInsets.zero,
+                          childAspectRatio: (Dimensions.screenWidth / 2) /
+                              (Dimensions.screenHeight / 24),
                           // Generate 100 widgets that display their index in the List.
                           children: List.generate(listOfShops.length, (index) {
                             return Column(

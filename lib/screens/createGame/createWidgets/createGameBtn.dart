@@ -71,8 +71,7 @@ class _CreateGameBtnState extends State<CreateGameBtn> {
                 String fromDate = '';
                 String toDate = '';
                 String gameName = '';
-                _showDialog(
-                    "Confirm create game? "); //shifted below from top of func
+                //shifted below from top of func
                 bool gameExist = false;
                 for (int i = 0; i < row.numOfRows; i++) {
                   var name = textController.gameNameController.text;
@@ -90,6 +89,7 @@ class _CreateGameBtnState extends State<CreateGameBtn> {
                 }
 
                 if (!gameExist && confirmState) {
+                  _showDialog("Confirm create game? ");
                   for (int i = 0; i < textController.shops.value.length; i++) {
                     // var insertGame =
                     //     await db.insert(table: 'game_file', insertData: {
@@ -114,7 +114,7 @@ class _CreateGameBtnState extends State<CreateGameBtn> {
 
                   db.close();
                   confirmState = false;
-                  Get.to(() => MenuPage());
+                  //Get.to(() => MenuPage());
                 }
                 //insert row
                 // await db.insert(
