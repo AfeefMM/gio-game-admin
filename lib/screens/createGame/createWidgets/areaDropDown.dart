@@ -2,6 +2,7 @@ import 'package:drop_down_list/drop_down_list.dart';
 import 'package:drop_down_list/model/selected_list_item.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:gio_game_admin/screens/login.dart';
 import 'package:gio_game_admin/utils/colours.dart';
 import 'package:gio_game_admin/widgets/textF.dart';
 import 'package:gio_game_admin/widgets/textLabel.dart';
@@ -161,9 +162,11 @@ class _AreaDropDownBtnState extends State<AreaDropDownBtn> {
       var query = await db.query('SELECT * from shop_areas;');
 
       items.clear();
+      textController.clearShop();
       for (int i = 0; i < query.numOfRows; i++) {
         //items.add(query.rows[i]['area_name']);
         items.add(SelectedListItem(name: query.rows[i]['area_name']));
+        textController.addShopValue(query.rows[i]['area_name'], 0);
       }
 
       db.close();

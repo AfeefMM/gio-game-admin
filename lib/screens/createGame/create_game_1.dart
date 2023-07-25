@@ -36,6 +36,10 @@ class _CreateGamePageStep1State extends State<CreateGamePageStep1> {
   @override
   Widget build(BuildContext context) {
     //getSQLData();
+    textController.gameNameController.clear();
+    textController.gameFromDateController.clear();
+    textController.gameToDateController.clear();
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColours.blueColour,
@@ -99,11 +103,19 @@ class _CreateGamePageStep1State extends State<CreateGamePageStep1> {
                       child: OutlinedButton(
                         onPressed: () async {
                           //onto next page
-                          if (textController.shopAreaController != null) {
-                            Get.to(() => SelectShopsPage(
-                                  areaName:
-                                      textController.shopAreaController.text,
-                                ));
+                          if (textController.gameNameController.text != "" &&
+                              textController.gameFromDateController.text !=
+                                  "" &&
+                              textController.gameFromDateController.text !=
+                                  "") {
+                            if (textController.shopAreaController.text != "") {
+                              Get.to(() => SelectShopsPage(
+                                    areaName:
+                                        textController.shopAreaController.text,
+                                  ));
+                            }
+                          } else {
+                            _showDialog("Missing fields, enter all details");
                           }
                         },
                         style: ElevatedButton.styleFrom(
@@ -132,4 +144,61 @@ class _CreateGamePageStep1State extends State<CreateGamePageStep1> {
       ),
     );
   }
+
+  // bool dateCompare(String from, String to) {
+  //   // if (fromD.compareTo(toD) < 0) {
+  //   //   print("true");
+  //   //   return true;
+  //   // }
+  //   // _showDialog("From date is after To date");
+  //   // print("false");
+  //   return false;
+  // }
+
+  bool _isDialogShowing = false;
+  void _showDialog(String text) {
+    _isDialogShowing = true; // set it `true` since dialog is being displayed
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(text),
+          actions: <Widget>[
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.fromLTRB(1, 13, 1, 13),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(6.0)),
+                  backgroundColor: AppColours.blueColour,
+                  textStyle: const TextStyle(color: AppColours.btnTextColour)),
+              child: const Text(
+                "Close",
+                style: TextStyle(color: AppColours.btnTextColour),
+              ),
+              onPressed: () {
+                _isDialogShowing =
+                    false; // set it `false` since dialog is closed
+                Navigator.of(context).pop();
+              },
+            )
+          ],
+        );
+      },
+    );
+  }
 }
+
+// DateTime dt1 = DateTime.parse("2021-12-23 11:47:00");
+// DateTime dt2 = DateTime.parse("2018-02-27 10:09:00");
+
+// if(dt1.compareTo(dt2) == 0){
+//     print("Both date time are at same moment.");
+// }
+
+// if(dt1.compareTo(dt2) < 0){
+//     print("DT1 is before DT2");
+// }
+
+// if(dt1.compareTo(dt2) > 0){
+//     print("DT1 is after DT2");
+// }

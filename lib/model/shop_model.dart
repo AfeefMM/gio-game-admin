@@ -1,6 +1,6 @@
 class ShopModel {
   final String? shopName;
-  final String? shopValue;
+  final int? shopValue;
 
   ShopModel({
     required this.shopName,

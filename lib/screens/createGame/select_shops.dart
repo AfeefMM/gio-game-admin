@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:gio_game_admin/widgets/textF.dart';
 import 'package:mysql_utils/mysql_utils.dart';
 
 import 'package:gio_game_admin/screens/createGame/createWidgets/textCreateField.dart';
@@ -24,8 +25,7 @@ class SelectShopsPage extends StatefulWidget {
 }
 
 final textController = Get.put(TextController());
-
-//var areaName = Get.arguments;
+List<TextEditingController> _shopValController = [];
 
 var shopList = [];
 
@@ -80,7 +80,8 @@ class _SelectShopsPageState extends State<SelectShopsPage> {
                     child: ListView.builder(
                   itemCount: shopList.length,
                   itemBuilder: (context, index) {
-                    return Row(
+                    _shopValController.add(TextEditingController());
+                    return Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Padding(
@@ -89,7 +90,11 @@ class _SelectShopsPageState extends State<SelectShopsPage> {
                             text: shopList[index],
                             color: AppColours.blueColour,
                           ),
-                        )
+                        ),
+                        TextF(
+                            text: "shopVal",
+                            value: shopList[index],
+                            controller: _shopValController[index]),
                       ],
                     );
                   },

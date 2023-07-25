@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:gio_game_admin/model/shop_model.dart';
+import 'package:gio_game_admin/screens/login.dart';
 import '../utils/colours.dart';
 import '../utils/dimensions.dart';
 
 class TextF extends StatelessWidget {
   Color? color;
   final String text;
-  TextEditingController controller;
+  var controller;
   String value;
+  int index;
   double size;
   TextOverflow overflow;
   FontWeight fontWeight;
@@ -16,9 +19,10 @@ class TextF extends StatelessWidget {
       required this.text,
       required this.controller,
       this.value = "",
+      this.index = 0,
       this.overflow = TextOverflow.ellipsis,
       this.fontWeight = FontWeight.w800,
-      this.size = 0})
+      this.size = 343})
       : super(key: key);
 
   @override
@@ -31,8 +35,14 @@ class TextF extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.fromLTRB(1, 5, 1, 20),
       child: SizedBox(
-        width: 343,
+        width: size,
         child: TextField(
+          onChanged: (valueField) {
+            if (text == "shopVal") {
+              textController.shops.value.insert(index,
+                  ShopModel(shopName: value, shopValue: int.parse(valueField)));
+            }
+          },
           obscureText: pass,
           controller: controller,
           style: const TextStyle(

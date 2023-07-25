@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:gio_game_admin/screens/login.dart';
 import 'package:gio_game_admin/utils/colours.dart';
 import 'package:gio_game_admin/widgets/textF.dart';
@@ -78,12 +79,19 @@ class _CreateDateState extends State<CreateDate> {
     final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: selectedDate, // Refer step 1
-      firstDate: DateTime(2000),
+      firstDate: DateTime(2022),
       lastDate: DateTime(2025),
     );
     if (picked != null && picked != selectedDate) {
       setState(() {
         selectedDate = picked;
+        // if (widget.value == "from") {
+        //   textController.fromDate = picked as Rx<DateTime Function()>;
+        // }
+        // if (widget.value == "to") {
+        //   textController.toDate = picked as Rx<DateTime Function()>;
+        // }
+
         widget.controller.text = "${selectedDate.toLocal()}".split(' ')[0];
       });
     }

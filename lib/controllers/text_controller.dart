@@ -11,6 +11,7 @@ class TextController extends GetxController {
   TextEditingController gameFromDateController = TextEditingController();
   TextEditingController gameToDateController = TextEditingController();
   TextEditingController shopAreaController = TextEditingController();
+  TextEditingController shopValueController = TextEditingController();
 
   Rx<List<ShopModel>> shops = Rx<List<ShopModel>>([]);
   late ShopModel shopModel;
@@ -39,11 +40,18 @@ class TextController extends GetxController {
     shopAreaController.addListener(() {
       controllerText.value = shopAreaController.text;
     });
+    shopValueController.addListener(() {
+      controllerText.value = shopValueController.text;
+    });
   }
 
-  addShopValue(String name, String value) {
+  addShopValue(String name, int value) {
     shopModel = ShopModel(shopName: name, shopValue: value);
     shops.value.add(shopModel);
     shopCount.value = shops.value.length;
+  }
+
+  clearShop() {
+    shops.value.clear();
   }
 }
