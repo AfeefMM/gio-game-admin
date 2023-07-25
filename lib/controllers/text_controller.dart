@@ -14,6 +14,10 @@ class TextController extends GetxController {
   TextEditingController shopValueController = TextEditingController();
   TextEditingController staffNameController = TextEditingController();
 
+  DateTime fromDate = DateTime(2017, 9, 7, 17);
+  bool isFromSelected = false;
+  DateTime toDate = DateTime(2017, 9, 7, 17);
+
   Rx<List<ShopModel>> shops = Rx<List<ShopModel>>([]);
   late ShopModel shopModel;
   var shopCount = 0.obs;
@@ -23,6 +27,7 @@ class TextController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+
     staffIDController.addListener(() {
       controllerText.value = staffIDController.text;
     });

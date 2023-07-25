@@ -43,7 +43,6 @@ class _CreateGameBtnState extends State<CreateGameBtn> {
           child: OutlinedButton(
             onPressed: () async {
               try {
-                _showDialog("Confirm create game? ");
                 var db = MysqlUtils(
                     settings: {
                       'host': SQLData.ip,
@@ -72,8 +71,8 @@ class _CreateGameBtnState extends State<CreateGameBtn> {
                 String fromDate = '';
                 String toDate = '';
                 String gameName = '';
-
-                bool flag = false;
+                _showDialog(
+                    "Confirm create game? "); //shifted below from top of func
                 bool gameExist = false;
                 for (int i = 0; i < row.numOfRows; i++) {
                   var name = textController.gameNameController.text;
@@ -143,6 +142,18 @@ class _CreateGameBtnState extends State<CreateGameBtn> {
             ),
           ),
         ));
+  }
+
+  bool compareDates() {
+    var fromD = textController.fromDate;
+    var toD = textController.toDate;
+    if (fromD.compareTo(toD) < 0) {
+      print("is lesser");
+      return true;
+    } else if (fromD.compareTo(toD) >= 0) {
+      return false;
+    }
+    return false;
   }
 
   bool _isDialogShowing = false;

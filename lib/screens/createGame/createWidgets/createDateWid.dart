@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:gio_game_admin/screens/login.dart';
 import 'package:gio_game_admin/utils/colours.dart';
 import 'package:gio_game_admin/widgets/textF.dart';
 import 'package:gio_game_admin/widgets/textLabel.dart';
+
+import '../../../controllers/text_controller.dart';
 
 class CreateDate extends StatefulWidget {
   Color? color;
@@ -28,8 +31,9 @@ class CreateDate extends StatefulWidget {
   State<CreateDate> createState() => _CreateDateState();
 }
 
+final textController = Get.put(TextController());
+
 class _CreateDateState extends State<CreateDate> {
-  String _selectedDate = "";
   DateTime selectedDate = DateTime.now();
   @override
   Widget build(BuildContext context) {
@@ -78,20 +82,27 @@ class _CreateDateState extends State<CreateDate> {
   void _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
-      initialDate: selectedDate, // Refer step 1
-      firstDate: DateTime.now(),
+      initialDate: textController.isFromSelected
+          ? textController.fromDate
+          : selectedDate, // Refer step 1
+      firstDate: textController.isFromSelected
+          ? textController.fromDate
+          : DateTime.now(),
       lastDate: DateTime(2025),
     );
     if (picked != null && picked != selectedDate) {
       setState(() {
         selectedDate = picked;
-        // if (widget.value == "from") {
-        //   textController.fromDate = picked as Rx<DateTime Function()>;
-        // }
-        // if (widget.value == "to") {
-        //   textController.toDate = picked as Rx<DateTime Function()>;
-        // }
 
+        // print("selected date: " + selectedDate.toString());selected date: 2023-07-26 00:00:00.000
+        if (widget.value == 'from') {
+          textController.fromDate = selectedDate;
+          textController.isFromSelected = true;
+        }
+        if (widget.value == 'to') {
+          if (selectedDate.compareTo(textController.fromDate) < 0) {}
+          textController.toDate = selectedDate;
+        }
         widget.controller.text = "${selectedDate.toLocal()}".split(' ')[0];
       });
     }
@@ -104,43 +115,35 @@ class _CreateDateState extends State<CreateDate> {
   //   });
   // }
 
-  // Future<void> _showAlertDialog() async {
-  //   return showDialog<void>(
-  //     context: context,
-  //     barrierDismissible: false, // user must tap button!
-  //     builder: (BuildContext context) {
-  //       return AlertDialog(
-  //         // <-- SEE HERE
-  //         title: const Text('Cancel booking'),
-  //         content: SingleChildScrollView(
-  //           child: ListBody(
-  //             children: <Widget>[
-  //               SizedBox(
-  //                 width: 300,
-  //                 height: 300,
-  //                 child: SfDateRangePicker(
-  //                     onSelectionChanged: _onSelectionChanged,
-  //                     selectionMode: DateRangePickerSelectionMode.single),
-  //               ),
-  //             ],
-  //           ),
-  //         ),
-  //         actions: <Widget>[
-  //           TextButton(
-  //             child: const Text('Cancel'),
-  //             onPressed: () {
-  //               Navigator.of(context).pop();
-  //             },
-  //           ),
-  //           TextButton(
-  //             child: const Text('Select Date'),
-  //             onPressed: () {
-  //               Navigator.of(context).pop();
-  //             },
-  //           ),
-  //         ],
-  //       );
-  //     },
-  //   );
-  // }
+  bool _isDialogShowing = false;
+  void _showDialog(String text) {
+    _isDialogShowing = true; // set it `true` since dialog is being displayed
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(text),
+          actions: <Widget>[
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.fromLTRB(1, 13, 1, 13),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(6.0)),
+                  backgroundColor: AppColours.blueColour,
+                  textStyle: const TextStyle(color: AppColours.btnTextColour)),
+              child: const Text(
+                "Close",
+                style: TextStyle(color: AppColours.btnTextColour),
+              ),
+              onPressed: () {
+                _isDialogShowing =
+                    false; // set it `false` since dialog is closed
+                Navigator.of(context).pop();
+              },
+            )
+          ],
+        );
+      },
+    );
+  }
 }

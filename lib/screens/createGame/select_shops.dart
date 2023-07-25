@@ -41,7 +41,7 @@ class _SelectShopsPageState extends State<SelectShopsPage> {
   @override
   Widget build(BuildContext context) {
     //getSQLData();
-
+    _shopValController.clear(); //clears textcontroller for the shop values
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColours.blueColour,
