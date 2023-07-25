@@ -3,20 +3,19 @@ import 'package:get/get.dart';
 
 import 'package:mysql_utils/mysql_utils.dart';
 
-import '../controllers/text_controller.dart';
+import '../../../controllers/text_controller.dart';
+import '../../../utils/colours.dart';
+import '../../../utils/sql_data.dart';
+import '../../menu.dart';
 
-import '../screens/menu.dart';
-import '../utils/colours.dart';
-import '../utils/sql_data.dart';
-
-class LoginBtn extends StatefulWidget {
+class CreateGameBtn extends StatefulWidget {
   Color? color;
   final String text;
   double size;
   TextOverflow overflow;
   FontWeight fontWeight;
   String value;
-  LoginBtn(
+  CreateGameBtn(
       {Key? key,
       this.color = AppColours.blueColour,
       required this.text,
@@ -27,10 +26,12 @@ class LoginBtn extends StatefulWidget {
       : super(key: key);
 
   @override
-  State<LoginBtn> createState() => _LoginBtnState();
+  State<CreateGameBtn> createState() => _CreateGameBtnState();
 }
 
-class _LoginBtnState extends State<LoginBtn> {
+bool confirmState = false;
+
+class _CreateGameBtnState extends State<CreateGameBtn> {
   final textController = Get.put(TextController());
 
   @override
@@ -42,6 +43,7 @@ class _LoginBtnState extends State<LoginBtn> {
           child: OutlinedButton(
             onPressed: () async {
               try {
+                _showDialog("Confirm create game? ");
                 var db = MysqlUtils(
                     settings: {
                       'host': SQLData.ip,
@@ -66,35 +68,54 @@ class _LoginBtnState extends State<LoginBtn> {
                       print('whenComplete');
                     });
 
-                var row = await db.query('SELECT * from control_file;');
-                String staffName = '';
-                //print(row.rows[0]); //{game_id: 1, staff_id: 1012, qty: 2, amount: 350.0, score: 1}
-                //print(row.rows[0]["staff_id"]); //1012 -> gives values
+                var row = await db.query('SELECT * from game_file;');
+                String fromDate = '';
+                String toDate = '';
+                String gameName = '';
+
                 bool flag = false;
-                bool userExist = false;
+                bool gameExist = false;
                 for (int i = 0; i < row.numOfRows; i++) {
-                  var id = textController.staffIDController.text;
-                  var pass = textController.staffPassController.text;
-                  var sqlID = row.rows[i]["staff_id"];
-                  var sqlPass = row.rows[i]["password"];
-                  if (id == sqlID && pass == sqlPass) {
+                  var name = textController.gameNameController.text;
+                  var from = textController.gameFromDateController.text;
+                  var to = textController.gameToDateController.text;
+
+                  fromDate = row.rows[i]["from_date"];
+                  toDate = row.rows[i]["to_date"];
+                  gameName = row.rows[i]["game_name"];
+
+                  if (gameName == name && fromDate == from && toDate == to) {
                     staffName = row.rows[i]['name'];
-                    flag = true;
-                  }
-                  if (id == sqlID) {
-                    userExist = true;
+                    gameExist = true;
                   }
                 }
 
-                if (flag) {
-                  db.close();
+                if (!gameExist && confirmState) {
+                  for (int i = 0; i < textController.shops.value.length; i++) {
+                    // var insertGame =
+                    //     await db.insert(table: 'game_file', insertData: {
+                    //   'game_name': textController.gameNameController.text,
+                    //   'from_date': textController.gameFromDateController.text,
+                    //   'to_date': textController.gameToDateController.text,
+                    //   'store_code':
+                    //       textController.shops.value.elementAt(i).shopName,
+                    //   'game_value':
+                    //       textController.shops.value.elementAt(i).shopValue,
+                    //   'area_name': textController.shopAreaController.text,
+                    // });
+                    var insertGame = await db.query(
+                        "INSERT INTO gio_game.game_file (game_name, from_date, to_date, store_code, game_value, area_name)" +
+                            "VALUES('${textController.gameNameController.text}', '${textController.gameFromDateController.text}', '${textController.gameToDateController.text}', '${textController.shops.value.elementAt(i).shopName}', ${textController.shops.value.elementAt(i).shopValue}, '${textController.shopAreaController.text}');");
+                    print(insertGame.toString());
+                  }
+
                   textController.staffPassController.clear();
-                  textController.staffNameController.text = staffName;
-                  Get.to(() => MenuPage(), arguments: staffName);
-                } else if (userExist) {
-                  _showDialog("Wrong password");
-                } else {
-                  _showDialog("User does not exist");
+                  Get.to(() => MenuPage(),
+                      arguments: textController.staffNameController.text);
+
+                  db.close();
+                  confirmState = false;
+                  Get.to(() => MenuPage());
                 }
                 //insert row
                 // await db.insert(
@@ -142,7 +163,7 @@ class _LoginBtnState extends State<LoginBtn> {
                   backgroundColor: AppColours.blueColour,
                   textStyle: const TextStyle(color: AppColours.btnTextColour)),
               child: const Text(
-                "Close",
+                "Cancel",
                 style: TextStyle(color: AppColours.btnTextColour),
               ),
               onPressed: () {
@@ -150,7 +171,28 @@ class _LoginBtnState extends State<LoginBtn> {
                     false; // set it `false` since dialog is closed
                 Navigator.of(context).pop();
               },
-            )
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.fromLTRB(1, 13, 1, 13),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(6.0)),
+                  backgroundColor: AppColours.blueColour,
+                  textStyle: const TextStyle(color: AppColours.btnTextColour)),
+              child: const Text(
+                "Confirm",
+                style: TextStyle(color: AppColours.btnTextColour),
+              ),
+              onPressed: () {
+                setState(() {
+                  confirmState = true;
+                });
+
+                _isDialogShowing =
+                    false; // set it `false` since dialog is closed
+                Navigator.of(context).pop();
+              },
+            ),
           ],
         );
       },

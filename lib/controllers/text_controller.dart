@@ -12,6 +12,7 @@ class TextController extends GetxController {
   TextEditingController gameToDateController = TextEditingController();
   TextEditingController shopAreaController = TextEditingController();
   TextEditingController shopValueController = TextEditingController();
+  TextEditingController staffNameController = TextEditingController();
 
   Rx<List<ShopModel>> shops = Rx<List<ShopModel>>([]);
   late ShopModel shopModel;
@@ -42,6 +43,9 @@ class TextController extends GetxController {
     });
     shopValueController.addListener(() {
       controllerText.value = shopValueController.text;
+    });
+    staffNameController.addListener(() {
+      controllerText.value = staffNameController.text;
     });
   }
 

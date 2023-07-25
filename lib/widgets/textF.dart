@@ -44,11 +44,6 @@ class TextF extends StatelessWidget {
             if (controller != null) {
               if (text == "shopVal") {
                 textController.addShopValue(value, int.parse(controller.text));
-                // textController.shops.value.insert(
-                //     index,
-                //     ShopModel(
-                //         shopName: value,
-                //         shopValue: int.parse(controller.text)));
 
                 print(textController.shops.value.elementAt(0).shopName);
                 print(textController.shops.value.elementAt(0).shopValue);

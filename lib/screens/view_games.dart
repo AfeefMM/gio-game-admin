@@ -123,13 +123,6 @@ class _ViewGamesPageState extends State<ViewGamesPage> {
     }
   }
 
-  String capitalizeFirstLetter(String input) {
-    if (input == null || input.isEmpty) {
-      return '';
-    }
-    return input[0].toUpperCase() + input.substring(1);
-  }
-
   @override
   Widget build(BuildContext context) {
     //getSQLData();
@@ -145,14 +138,8 @@ class _ViewGamesPageState extends State<ViewGamesPage> {
                 Get.back();
               },
             ),
-            TextLabel(
-              text: "Welcome ${capitalizeFirstLetter(staffName)}",
-              color: AppColours.whiteColour,
-              fontWeight: FontWeight.w500,
-            ),
           ],
         ),
-        leadingWidth: 200,
         actions: [
           IconButton(
               onPressed: () {

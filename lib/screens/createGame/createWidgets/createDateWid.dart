@@ -79,7 +79,7 @@ class _CreateDateState extends State<CreateDate> {
     final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: selectedDate, // Refer step 1
-      firstDate: DateTime(2022),
+      firstDate: DateTime.now(),
       lastDate: DateTime(2025),
     );
     if (picked != null && picked != selectedDate) {

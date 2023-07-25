@@ -40,13 +40,6 @@ class _ReviewPageState extends State<ReviewPage> {
     super.initState();
   }
 
-  String capitalizeFirstLetter(String input) {
-    if (input == null || input.isEmpty) {
-      return '';
-    }
-    return input[0].toUpperCase() + input.substring(1);
-  }
-
   Future<void> getSQLData() async {
     try {
       var db = MysqlUtils(
@@ -118,14 +111,8 @@ class _ReviewPageState extends State<ReviewPage> {
                   Get.back();
                 },
               ),
-              TextLabel(
-                text: "Welcome ${capitalizeFirstLetter(staffName)}",
-                color: AppColours.whiteColour,
-                fontWeight: FontWeight.w500,
-              ),
             ],
           ),
-          leadingWidth: 200,
           actions: [
             IconButton(
                 onPressed: () {

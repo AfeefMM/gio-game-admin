@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: 'Flutter Demo',
-      home: CreateGamePageStep1(),
+      home: LoginPage(),
     );
   }
 }

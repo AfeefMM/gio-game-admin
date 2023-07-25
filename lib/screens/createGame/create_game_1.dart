@@ -9,16 +9,16 @@ import 'createWidgets/areaDropDown.dart';
 import 'createWidgets/createDateWid.dart';
 import 'select_shops.dart';
 
-class CreateGamePageStep1 extends StatefulWidget {
+class CreateGamePageStep extends StatefulWidget {
   @override
-  State<CreateGamePageStep1> createState() => _CreateGamePageStep1State();
+  State<CreateGamePageStep> createState() => _CreateGamePageStepState();
 }
 
 final textController = Get.put(TextController());
 
 var staffName = Get.arguments;
 
-class _CreateGamePageStep1State extends State<CreateGamePageStep1> {
+class _CreateGamePageStepState extends State<CreateGamePageStep> {
   @override
   void initState() {
     // TODO: implement initState

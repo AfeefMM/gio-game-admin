@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:gio_game_admin/screens/createGame/create_game_1.dart';
 import 'package:gio_game_admin/screens/view_games.dart';
 import 'package:gio_game_admin/widgets/textLabel.dart';
 
@@ -56,7 +57,7 @@ class _MenuBtnState extends State<MenuBtn> {
                     Get.to(() => ViewGamesPage());
                   }
                   if (widget.type == "create") {
-                    Get.to(() => ViewGamesPage());
+                    Get.to(() => CreateGamePageStep());
                   }
                 },
                 style: ElevatedButton.styleFrom(

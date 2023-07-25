@@ -13,6 +13,7 @@ import '../../utils/colours.dart';
 import '../../utils/sql_data.dart';
 import '../../widgets/textLabel.dart';
 import '../login.dart';
+import 'createWidgets/createGameBtn.dart';
 
 class CreateReviewPage extends StatefulWidget {
   @override
@@ -126,7 +127,7 @@ class _CreateReviewPageState extends State<CreateReviewPage> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Container(
-                    height: 300,
+                    height: 200,
                     width: Dimensions.screenWidth - 50,
                     child: GridView.count(
                       // Create a grid with 2 columns. If you change the scrollDirection to
@@ -172,7 +173,9 @@ class _CreateReviewPageState extends State<CreateReviewPage> {
                 ],
               ),
             ),
-            const Spacer()
+            CreateGameBtn(
+              text: 'Create',
+            ),
           ],
         )));
   }
