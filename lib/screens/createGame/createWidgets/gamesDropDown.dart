@@ -76,6 +76,7 @@ class _GameNameDropDownBtnState extends State<GameNameDropDownBtn> {
                     toggledChild: Container(
                       child: normalChildButton,
                     ),
+
                     onItemSelected: (String value) {
                       setState(() {
                         selectedVal = value;

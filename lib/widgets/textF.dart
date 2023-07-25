@@ -40,7 +40,7 @@ class TextF extends StatelessWidget {
       child: SizedBox(
         width: size,
         child: TextField(
-          onChanged: (value) {
+          onEditingComplete: () {
             if (controller != null) {
               if (text == "0") {
                 textController.addShopValue(value, int.parse(controller.text));

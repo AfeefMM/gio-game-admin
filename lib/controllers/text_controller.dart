@@ -61,6 +61,15 @@ class TextController extends GetxController {
     shopCount.value = shops.value.length;
   }
 
+  clearVals() {
+    gameNameController.clear();
+    gameFromDateController.clear();
+    gameToDateController.clear();
+    shops.value.clear();
+    isFromSelected = false;
+    isToSelected = false;
+  }
+
   clearShop() {
     shops.value.clear();
   }
