@@ -172,6 +172,8 @@ class _ViewGamesPageState extends State<ViewGamesPage> {
                       Get.to(
                           () => ReviewPage(
                                 title: title,
+                                fromDate: fromDate,
+                                toDate: toDate,
                               ),
                           arguments: [staffName]);
                     },

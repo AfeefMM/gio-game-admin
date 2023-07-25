@@ -83,13 +83,15 @@ class _CreateGameBtnState extends State<CreateGameBtn> {
                   gameName = row.rows[i]["game_name"];
 
                   if (gameName == name && fromDate == from && toDate == to) {
-                    staffName = row.rows[i]['name'];
+                    // staffName = row.rows[i]['name'];
                     gameExist = true;
                   }
                 }
-
+                _showDialog("Confirm create game? ");
+                print(gameExist.toString() + " " + confirmState.toString());
                 if (!gameExist && confirmState) {
-                  _showDialog("Confirm create game? ");
+                  // Get.to(() => MenuPage(),
+                  //     arguments: textController.staffNameController.text);
                   for (int i = 0; i < textController.shops.value.length; i++) {
                     // var insertGame =
                     //     await db.insert(table: 'game_file', insertData: {
@@ -109,8 +111,6 @@ class _CreateGameBtnState extends State<CreateGameBtn> {
                   }
 
                   textController.staffPassController.clear();
-                  Get.to(() => MenuPage(),
-                      arguments: textController.staffNameController.text);
 
                   db.close();
                   confirmState = false;
@@ -201,7 +201,8 @@ class _CreateGameBtnState extends State<CreateGameBtn> {
 
                 _isDialogShowing =
                     false; // set it `false` since dialog is closed
-                Navigator.of(context).pop();
+                Get.to(() => MenuPage(),
+                    arguments: textController.staffNameController.text);
               },
             ),
           ],

@@ -127,7 +127,7 @@ class _CreateReviewPageState extends State<CreateReviewPage> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Container(
-                    height: 200,
+                    height: Dimensions.height200,
                     width: Dimensions.screenWidth - 50,
                     child: GridView.count(
                       // Create a grid with 2 columns. If you change the scrollDirection to

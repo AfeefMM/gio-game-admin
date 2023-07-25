@@ -18,9 +18,13 @@ class ReviewPage extends StatefulWidget {
   @override
   State<ReviewPage> createState() => _ReviewPageState();
   String title;
+  String fromDate;
+  String toDate;
   ReviewPage({
     Key? key,
     required this.title,
+    required this.fromDate,
+    required this.toDate,
   }) : super(key: key);
 }
 
@@ -76,7 +80,9 @@ class _ReviewPageState extends State<ReviewPage> {
       var row = await db.query('SELECT * from game_file;');
       var numOfGames = row.numOfRows; //number of games
       for (int i = 0; i < numOfGames; i++) {
-        if (row.rows[i]['game_name'] == widget.title) {
+        if (row.rows[i]['game_name'] == widget.title &&
+            row.rows[i]['from_date'] == widget.fromDate &&
+            row.rows[i]['to_date'] == widget.toDate) {
           gameName = row.rows[i]['game_name'];
           fromDate = row.rows[i]['from_date'];
           toDate = row.rows[i]['to_date'];
@@ -171,7 +177,7 @@ class _ReviewPageState extends State<ReviewPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Container(
-                        height: 300,
+                        height: Dimensions.height300,
                         width: Dimensions.screenWidth - 50,
                         child: GridView.count(
                           // Create a grid with 2 columns. If you change the scrollDirection to
