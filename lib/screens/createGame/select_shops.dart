@@ -94,7 +94,7 @@ class _SelectShopsPageState extends State<SelectShopsPage> {
                           ),
                         ),
                         TextF(
-                            text: "shopVal",
+                            text: "0",
                             value: shopList[index],
                             controller: _shopValController[index]),
                       ],

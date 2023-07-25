@@ -100,7 +100,6 @@ class _CreateDateState extends State<CreateDate> {
           textController.isFromSelected = true;
         }
         if (widget.value == 'to') {
-          if (selectedDate.compareTo(textController.fromDate) < 0) {}
           textController.toDate = selectedDate;
         }
         widget.controller.text = "${selectedDate.toLocal()}".split(' ')[0];

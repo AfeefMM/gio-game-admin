@@ -7,6 +7,7 @@ import '../../utils/colours.dart';
 import '../../widgets/textLabel.dart';
 import 'createWidgets/areaDropDown.dart';
 import 'createWidgets/createDateWid.dart';
+import 'createWidgets/gamesDropDown.dart';
 import 'select_shops.dart';
 
 class CreateGamePageStep extends StatefulWidget {
@@ -79,9 +80,12 @@ class _CreateGamePageStepState extends State<CreateGamePageStep> {
             Expanded(
                 child: ListView(
               children: [
-                CreateFields(
-                    text: "Game Name",
-                    controller: textController.gameNameController),
+                // CreateFields(
+                //     text: "Game Name",
+                //     controller: textController.gameNameController),
+                GameNameDropDownBtn(
+                  controller: textController.gameNameController,
+                ),
                 CreateDate(
                     text: "From Date",
                     value: "from",

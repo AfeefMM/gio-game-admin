@@ -177,9 +177,11 @@ class _ReviewPageState extends State<ReviewPage> {
                           // Create a grid with 2 columns. If you change the scrollDirection to
                           // horizontal, this produces 2 rows.
                           crossAxisCount: 2,
+                          padding: EdgeInsets.zero,
                           // Generate 100 widgets that display their index in the List.
                           children: List.generate(listOfShops.length, (index) {
                             return Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 // Text(code.customerName)
                                 Padding(
