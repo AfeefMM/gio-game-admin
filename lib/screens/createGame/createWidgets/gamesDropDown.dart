@@ -1,3 +1,5 @@
+import 'package:drop_down_list/drop_down_list.dart';
+import 'package:drop_down_list/model/selected_list_item.dart';
 import 'package:flutter/material.dart';
 import 'package:gio_game_admin/screens/login.dart';
 import 'package:gio_game_admin/utils/colours.dart';
@@ -31,7 +33,13 @@ class GameNameDropDownBtn extends StatefulWidget {
 
 String selectedVal = "";
 
-List<String> gameNames = [];
+final List<SelectedListItem> gameNames = [
+  SelectedListItem(
+    name: "Sample",
+    value: "TYO",
+    isSelected: false,
+  ),
+];
 
 class _GameNameDropDownBtnState extends State<GameNameDropDownBtn> {
   @override
@@ -53,48 +61,85 @@ class _GameNameDropDownBtnState extends State<GameNameDropDownBtn> {
                     fontWeight: FontWeight.w500,
                   ),
                 ),
+                // Padding(
+                //   padding: const EdgeInsets.fromLTRB(10, 10, 1, 5),
+                //   child: TextLabel(
+                //     text: textController.gameNameController.text,
+                //     color: AppColours.blueColour,
+                //     fontWeight: FontWeight.w500,
+                //   ),
+                // ),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(10, 10, 1, 5),
-                  child: TextLabel(
-                    text: textController.gameNameController.text,
-                    color: AppColours.blueColour,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(25, 10, 1, 5),
-                  child: MenuButton<String>(
-                    items: gameNames,
-                    itemBuilder: (String value) => Container(
-                      height: 40,
-                      alignment: Alignment.centerLeft,
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 0.0, horizontal: 16),
-                      child: Text(value),
+                  padding: const EdgeInsets.fromLTRB(25, 1, 1, 1),
+                  child: ButtonTheme(
+                    minWidth: 200,
+                    child: OutlinedButton(
+                      onPressed: () async {
+                        DropDownState(
+                          DropDown(
+                            bottomSheetTitle: const Text(
+                              "Games",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20.0,
+                              ),
+                            ),
+                            submitButtonChild: const Text(
+                              'Done',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            data: gameNames,
+                            selectedItems: (List<dynamic> selectedList) {
+                              List<String> list = [];
+                              for (var item in selectedList) {
+                                if (item is SelectedListItem) {
+                                  list.add(item.name);
+                                }
+                              }
+                              //showSnackBar(list.toString());
+                              setState(() {
+                                textController.gameNameController.text =
+                                    list[0].toString();
+                                // widget.value = list[0].toString();
+                              });
+
+                              // print(widget.controller.text);
+                            },
+                            enableMultipleSelection: false,
+                          ),
+                        ).showModal(context);
+                      },
+                      style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.fromLTRB(1, 13, 1, 13),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(6.0)),
+                          backgroundColor: AppColours.whiteColour,
+                          textStyle:
+                              const TextStyle(color: AppColours.btnTextColour)),
+                      child: Row(
+                        children: [
+                          Text(
+                            textController.gameNameController.text,
+                            style:
+                                const TextStyle(color: AppColours.blueColour),
+                          ),
+                        ],
+                      ),
                     ),
-
-                    toggledChild: Container(
-                      child: normalChildButton,
-                    ),
-
-                    onItemSelected: (String value) {
-                      setState(() {
-                        selectedVal = value;
-
-                        // textController.gameNameController.text = value;
-                        widget.controller.text = value;
-                      });
-                    },
-                    child: normalChildButton,
-                    // onMenuButtonToggle: (bool isToggle) {
-                    //   print(isToggle);
-                    // },
                   ),
                 ),
               ],
             );
           }),
     );
+  }
+
+  void showSnackBar(String message) {
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text(message)));
   }
 
   final Widget normalChildButton = SizedBox(
@@ -121,6 +166,7 @@ class _GameNameDropDownBtnState extends State<GameNameDropDownBtn> {
       ),
     ),
   );
+
   Future<void> getSQLData() async {
     try {
       var db = MysqlUtils(
@@ -153,7 +199,7 @@ class _GameNameDropDownBtnState extends State<GameNameDropDownBtn> {
       textController.clearShop();
       for (int i = 0; i < query.numOfRows; i++) {
         //items.add(query.rows[i]['area_name']);
-        gameNames.add(query.rows[i]['game_name']);
+        gameNames.add(SelectedListItem(name: query.rows[i]['game_name']));
         //textController.addShopValue(query.rows[i]['area_name'], 0);
       }
 
