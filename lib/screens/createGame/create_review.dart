@@ -64,12 +64,7 @@ class _CreateReviewPageState extends State<CreateReviewPage> {
             ],
           ),
           actions: [
-            IconButton(
-                onPressed: () {
-                  //create dropdown menu for logging out
-                  Get.off(() => LoginPage());
-                },
-                icon: const Icon(Icons.logout_outlined))
+            //side bar for delete and update
           ],
         ),
         backgroundColor: AppColours.mainColor,

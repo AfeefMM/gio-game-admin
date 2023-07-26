@@ -40,6 +40,8 @@ dependencies:
   dropdown_button2: ^2.3.6
   drop_down_list: ^0.0.5
   menu_button: ^1.4.2+1
+  modal_side_sheet: ^0.0.1
+
   
 
 

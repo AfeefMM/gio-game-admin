@@ -162,6 +162,7 @@ class _ViewGamesPageState extends State<ViewGamesPage> {
                   String toDate = gameToDates[index].toString();
 
                   String fromDate = gameFromDates[index].toString();
+                  // var gameID = int.parse(gameIDs[index]);
                   print("game name: " + index.toString() + title);
                   // String score = gameScores[index].toString();
 

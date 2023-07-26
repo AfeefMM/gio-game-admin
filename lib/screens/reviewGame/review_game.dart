@@ -1,25 +1,24 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:gio_game_admin/screens/view_games.dart';
 import 'package:gio_game_admin/utils/dimensions.dart';
+import 'package:modal_side_sheet/modal_side_sheet.dart';
 import 'package:mysql_utils/mysql_utils.dart';
 
 import 'package:gio_game_admin/screens/reviewGame/review_tLabel.dart';
-import 'package:gio_game_admin/screens/view_games.dart';
-import 'package:gio_game_admin/widgets/menu_btn.dart';
 
 import '../../controllers/text_controller.dart';
 import '../../utils/colours.dart';
 import '../../utils/sql_data.dart';
 import '../../widgets/textLabel.dart';
-import '../login.dart';
 
 class ReviewPage extends StatefulWidget {
   @override
   State<ReviewPage> createState() => _ReviewPageState();
-  String title;
-  String fromDate;
-  String toDate;
+  final String title;
+  final String fromDate;
+  final String toDate;
   ReviewPage({
     Key? key,
     required this.title,
@@ -102,6 +101,8 @@ class _ReviewPageState extends State<ReviewPage> {
     }
   }
 
+  List<String> sideList = ["Update", "Delete"];
+
   @override
   Widget build(BuildContext context) {
     //getSQLData();
@@ -120,12 +121,45 @@ class _ReviewPageState extends State<ReviewPage> {
             ],
           ),
           actions: [
+            //side bar for delete and update
             IconButton(
                 onPressed: () {
-                  //create dropdown menu for logging out
-                  Get.off(() => LoginPage());
+                  showModalSideSheet(
+                      // width: 700,
+                      context: context,
+                      ignoreAppBar: true,
+                      body: ListView.builder(
+                        itemCount: 2,
+                        itemBuilder: (context, index) {
+                          Icon icon = Icon(Icons.delete);
+                          String text = "Delete";
+                          if (index == 0) {
+                            icon = Icon(Icons.update);
+                            text = "Update";
+                          }
+                          return GestureDetector(
+                            onTap: () {
+                              if (index == 0) {
+                                //pass to update
+                                print("update");
+                              }
+                              if (index == 1) {
+                                //delete function and go to menu page
+                                deleteGame();
+                                Get.back();
+                                Get.back();
+                                print("delete");
+                              }
+                            },
+                            child: ListTile(
+                              leading: icon,
+                              title: Text(text),
+                            ),
+                          );
+                        },
+                      ));
                 },
-                icon: const Icon(Icons.logout_outlined))
+                icon: const Icon(Icons.menu))
           ],
         ),
         backgroundColor: AppColours.mainColor,
@@ -228,5 +262,21 @@ class _ReviewPageState extends State<ReviewPage> {
             );
           },
         ));
+  }
+
+  void deleteGame() async {
+    try {
+      var db = textController.initiateDBConn();
+      print("from date: " + toDate);
+
+      var del = await db!.query(
+          "delete from gio_game.game_file where game_name LIKE '${gameName}' AND from_date LIKE '${fromDate}' AND to_date LIKE '${toDate}'");
+      //modify query
+      // var del = await db!
+      //     .query("delete from game_file where game_id = ${widget.gameID}");
+      db.close();
+    } catch (e) {
+      print(e);
+    }
   }
 }
