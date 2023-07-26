@@ -16,11 +16,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        FocusScopeNode currentFocus = FocusScope.of(context);
+        // FocusScopeNode currentFocus = FocusScope.of(context);
 
-        if (!currentFocus.hasPrimaryFocus) {
-          currentFocus.unfocus();
-        }
+        // if (!currentFocus.hasPrimaryFocus) {
+        //   currentFocus.unfocus();
+        // }
+        FocusScope.of(context).unfocus();
       },
       child: GetMaterialApp(
         title: 'Flutter Demo',

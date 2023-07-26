@@ -28,6 +28,8 @@ class TextF extends StatelessWidget {
       this.size = 343})
       : super(key: key);
 
+  FocusNode focusNode1 = FocusNode();
+
   @override
   Widget build(BuildContext context) {
     final textController = Get.put(TextController());
@@ -35,23 +37,46 @@ class TextF extends StatelessWidget {
     if (text == "Password") {
       pass = true;
     }
+    //textController.focusNodes.add(FocusNode());
+    focusNode1.addListener(
+      () {
+        bool shopNameExists = false;
+        if (!focusNode1.hasFocus && text == "0") {
+          for (int i = 0; i < textController.shops.value.length; i++) {
+            if (textController.shops.value.elementAt(i).shopName == value) {
+              true;
+            }
+          }
+          if (!shopNameExists) {
+            textController.addShopValue(value, int.parse(controller.text));
+          }
+
+          print(textController.shops.value.elementAt(0).shopName);
+          print(textController.shops.value.elementAt(0).shopValue);
+
+          shopNameExists = false;
+        }
+      },
+    );
     //controller.text = value;
     return Padding(
       padding: const EdgeInsets.fromLTRB(1, 5, 1, 20),
       child: SizedBox(
         width: size,
         child: TextField(
+          focusNode: focusNode1,
+          keyboardType: textController.isNumber
+              ? TextInputType.number
+              : TextInputType.name,
           inputFormatters: textController.isNumber
-              ? <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly]
+              ? <TextInputFormatter>[
+                  FilteringTextInputFormatter.allow(RegExp(r'[0-9]'))
+                ]
               : [FilteringTextInputFormatter.singleLineFormatter],
           onEditingComplete: () {
+            SystemChannels.textInput.invokeMethod('TextInput.hide');
             if (controller != null) {
-              if (text == "0") {
-                textController.addShopValue(value, int.parse(controller.text));
-
-                print(textController.shops.value.elementAt(0).shopName);
-                print(textController.shops.value.elementAt(0).shopValue);
-              }
+              if (text == "0") {}
             }
           },
           obscureText: pass,
