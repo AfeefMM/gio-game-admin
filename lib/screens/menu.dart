@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:gio_game_admin/utils/dimensions.dart';
 import 'package:gio_game_admin/widgets/menu_btn.dart';
 
 import '../controllers/text_controller.dart';
@@ -37,17 +38,16 @@ class _MenuPageState extends State<MenuPage> {
     return Scaffold(
         appBar: AppBar(
           backgroundColor: AppColours.blueColour,
-          leading: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              TextLabel(
-                text: "Welcome ${capitalizeFirstLetter(staffName)}",
-                color: AppColours.whiteColour,
-                fontWeight: FontWeight.w500,
-              ),
-            ],
+          leading: Padding(
+            padding: const EdgeInsets.fromLTRB(30, 1, 1, 1),
+            child: TextLabel(
+              text: "Welcome ${capitalizeFirstLetter(staffName)}",
+              color: AppColours.whiteColour,
+              fontWeight: FontWeight.w500,
+              size: 14,
+            ),
           ),
-          leadingWidth: 200,
+          leadingWidth: Dimensions.width300,
           actions: [
             IconButton(
                 onPressed: () {

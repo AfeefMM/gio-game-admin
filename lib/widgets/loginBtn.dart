@@ -132,7 +132,10 @@ class _LoginBtnState extends State<LoginBtn> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text(text),
+          title: Text(
+            text,
+            style: TextStyle(fontWeight: FontWeight.w500),
+          ),
           actions: <Widget>[
             ElevatedButton(
               style: ElevatedButton.styleFrom(
@@ -143,7 +146,9 @@ class _LoginBtnState extends State<LoginBtn> {
                   textStyle: const TextStyle(color: AppColours.btnTextColour)),
               child: const Text(
                 "Close",
-                style: TextStyle(color: AppColours.btnTextColour),
+                style: TextStyle(
+                    color: AppColours.btnTextColour,
+                    fontWeight: FontWeight.w500),
               ),
               onPressed: () {
                 _isDialogShowing =

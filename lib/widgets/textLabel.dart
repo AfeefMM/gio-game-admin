@@ -15,7 +15,7 @@ class TextLabel extends StatelessWidget {
       this.color = Colors.black,
       required this.text,
       this.overflow = TextOverflow.ellipsis,
-      this.fontWeight = FontWeight.w500,
+      this.fontWeight = FontWeight.w300,
       this.size = 0})
       : super(key: key);
 

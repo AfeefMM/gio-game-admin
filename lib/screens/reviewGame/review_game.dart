@@ -144,7 +144,7 @@ class _ReviewPageState extends State<ReviewPage> {
                         text: "Game Description",
                         size: 24,
                         color: AppColours.blueColour,
-                        fontWeight: FontWeight.w600,
+                        fontWeight: FontWeight.w400,
                       ),
                     ],
                   ),
@@ -201,7 +201,7 @@ class _ReviewPageState extends State<ReviewPage> {
                                         text: listOfShops[index],
                                         color: AppColours.blueColour,
                                         size: 18,
-                                        fontWeight: FontWeight.bold,
+                                        fontWeight: FontWeight.w400,
                                       ),
                                       const Text(" - "),
                                       TextLabel(
