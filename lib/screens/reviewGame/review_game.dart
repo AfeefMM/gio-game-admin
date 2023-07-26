@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:gio_game_admin/screens/menu.dart';
 import 'package:gio_game_admin/screens/view_games.dart';
 import 'package:gio_game_admin/utils/dimensions.dart';
 import 'package:modal_side_sheet/modal_side_sheet.dart';
@@ -145,10 +146,7 @@ class _ReviewPageState extends State<ReviewPage> {
                               }
                               if (index == 1) {
                                 //delete function and go to menu page
-                                deleteGame();
-                                Get.back();
-                                Get.back();
-                                print("delete");
+                                _showDialog("Confirm delete game?");
                               }
                             },
                             child: ListTile(
@@ -267,7 +265,6 @@ class _ReviewPageState extends State<ReviewPage> {
   void deleteGame() async {
     try {
       var db = textController.initiateDBConn();
-      print("from date: " + toDate);
 
       var del = await db!.query(
           "delete from gio_game.game_file where game_name LIKE '${gameName}' AND from_date LIKE '${fromDate}' AND to_date LIKE '${toDate}'");
@@ -275,8 +272,60 @@ class _ReviewPageState extends State<ReviewPage> {
       // var del = await db!
       //     .query("delete from game_file where game_id = ${widget.gameID}");
       db.close();
+
+      Get.off(() => MenuPage());
     } catch (e) {
       print(e);
     }
+  }
+
+  bool _isDialogShowing = false;
+  void _showDialog(String text) {
+    _isDialogShowing = true; // set it `true` since dialog is being displayed
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(text),
+          actions: <Widget>[
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.fromLTRB(1, 13, 1, 13),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(6.0)),
+                  backgroundColor: AppColours.blueColour,
+                  textStyle: const TextStyle(color: AppColours.btnTextColour)),
+              child: const Text(
+                "Cancel",
+                style: TextStyle(color: AppColours.btnTextColour),
+              ),
+              onPressed: () {
+                _isDialogShowing =
+                    false; // set it `false` since dialog is closed
+                Navigator.of(context).pop();
+              },
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.fromLTRB(1, 13, 1, 13),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(6.0)),
+                  backgroundColor: AppColours.blueColour,
+                  textStyle: const TextStyle(color: AppColours.btnTextColour)),
+              child: const Text(
+                "Confirm",
+                style: TextStyle(color: AppColours.btnTextColour),
+              ),
+              onPressed: () {
+                deleteGame();
+
+                _isDialogShowing =
+                    false; // set it `false` since dialog is closed
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 }
