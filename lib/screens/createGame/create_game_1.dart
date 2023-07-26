@@ -117,11 +117,17 @@ class _CreateGamePageStepState extends State<CreateGamePageStep> {
                                   "" &&
                               textController.shopAreaController.text != "" &&
                               compareDates()) {
-                            if (textController.shopAreaController.text != "") {
-                              Get.to(() => SelectShopsPage(
-                                    areaName:
-                                        textController.shopAreaController.text,
-                                  ));
+                            if (!await gameExistChecker()) {
+                              if (textController.shopAreaController.text !=
+                                  "") {
+                                Get.to(() => SelectShopsPage(
+                                      areaName: textController
+                                          .shopAreaController.text,
+                                    ));
+                              }
+                            } else {
+                              _showDialog(
+                                  "Game already exists in same area and dates");
                             }
                           } else {
                             if (!compareDates()) {
@@ -156,6 +162,44 @@ class _CreateGamePageStepState extends State<CreateGamePageStep> {
         ),
       ),
     );
+  }
+
+  Future<bool> gameExistChecker() async {
+    try {
+      var db = textController.initiateDBConn();
+
+      var row = await db!.query('SELECT * from game_file;');
+      String fromDate = '';
+      String toDate = '';
+      String gameName = '';
+      String areaName = '';
+      //shifted below from top of func
+      bool gameExist = false;
+      for (int i = 0; i < row.numOfRows; i++) {
+        var name = textController.gameNameController.text;
+        var from = textController.gameFromDateController.text;
+        var to = textController.gameToDateController.text;
+        var area = textController.shopAreaController.text;
+
+        fromDate = row.rows[i]["from_date"];
+        toDate = row.rows[i]["to_date"];
+        gameName = row.rows[i]["game_name"];
+        areaName = row.rows[i]['area_name'];
+
+        if (gameName == name &&
+            fromDate == from &&
+            toDate == to &&
+            areaName == area) {
+          // staffName = row.rows[i]['name'];
+          gameExist = true;
+          return true;
+        }
+      }
+      return false;
+    } catch (e) {
+      print(e);
+      return false;
+    }
   }
 
   bool compareDates() {

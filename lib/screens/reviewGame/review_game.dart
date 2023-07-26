@@ -133,7 +133,7 @@ class _ReviewPageState extends State<ReviewPage> {
           future: getSQLData(),
           builder: (context, snapshot) {
             return Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Padding(
                   padding: const EdgeInsets.fromLTRB(1, 40, 1, 20),

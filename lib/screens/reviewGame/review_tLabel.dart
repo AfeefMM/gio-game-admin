@@ -23,7 +23,7 @@ class ReviewText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(20, 20, 1, 20),
+      padding: const EdgeInsets.fromLTRB(20, 10, 1, 10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

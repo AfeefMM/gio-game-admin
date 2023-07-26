@@ -66,15 +66,52 @@ class _SelectShopsPageState extends State<SelectShopsPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(1, 40, 1, 20),
+                  padding: const EdgeInsets.fromLTRB(20, 40, 1, 20),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       TextLabel(
                         text: "Select Shops",
                         size: 24,
                         color: AppColours.blueColour,
                         fontWeight: FontWeight.w600,
+                      ),
+                      //button
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Padding(
+                              padding: const EdgeInsets.fromLTRB(1, 5, 30, 1),
+                              child: ButtonTheme(
+                                minWidth: 300,
+                                child: OutlinedButton(
+                                  onPressed: () async {
+                                    //onto next page
+                                    Get.to(() => CreateReviewPage());
+                                    textController.isNumber = false;
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          1, 13, 1, 13),
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(6.0)),
+                                      backgroundColor: AppColours.blueColour,
+                                      textStyle: const TextStyle(
+                                          color: AppColours.btnTextColour)),
+                                  child: const Padding(
+                                    padding: EdgeInsets.fromLTRB(10, 1, 10, 1),
+                                    child: Text(
+                                      "Review",
+                                      style: TextStyle(
+                                          color: AppColours.btnTextColour,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                ),
+                              )),
+                        ],
                       ),
                     ],
                   ),
@@ -102,42 +139,6 @@ class _SelectShopsPageState extends State<SelectShopsPage> {
                     );
                   },
                 )),
-                //button
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Padding(
-                        padding: const EdgeInsets.fromLTRB(1, 5, 30, 30),
-                        child: ButtonTheme(
-                          minWidth: 300,
-                          child: OutlinedButton(
-                            onPressed: () async {
-                              //onto next page
-                              Get.to(() => CreateReviewPage());
-                              textController.isNumber = false;
-                            },
-                            style: ElevatedButton.styleFrom(
-                                padding:
-                                    const EdgeInsets.fromLTRB(1, 13, 1, 13),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(6.0)),
-                                backgroundColor: AppColours.blueColour,
-                                textStyle: const TextStyle(
-                                    color: AppColours.btnTextColour)),
-                            child: const Padding(
-                              padding: EdgeInsets.fromLTRB(10, 1, 10, 1),
-                              child: Text(
-                                "Review",
-                                style: TextStyle(
-                                    color: AppColours.btnTextColour,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            ),
-                          ),
-                        )),
-                  ],
-                )
               ],
             );
           }),

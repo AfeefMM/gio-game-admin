@@ -75,10 +75,10 @@ class _CreateReviewPageState extends State<CreateReviewPage> {
         backgroundColor: AppColours.mainColor,
         body: Container(
             child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.fromLTRB(1, 40, 1, 20),
+              padding: const EdgeInsets.fromLTRB(1, 30, 1, 30),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -127,7 +127,7 @@ class _CreateReviewPageState extends State<CreateReviewPage> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Container(
-                    height: Dimensions.height200,
+                    height: Dimensions.screenHeight / 3,
                     width: Dimensions.screenWidth - 50,
                     child: GridView.count(
                       // Create a grid with 2 columns. If you change the scrollDirection to
