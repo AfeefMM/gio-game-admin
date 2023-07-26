@@ -150,8 +150,11 @@ class _ReviewPageState extends State<ReviewPage> {
                   ),
                 ),
                 ReviewText(text: gameName, textTitle: "Game Name: "),
-                ReviewText(text: fromDate, textTitle: "From Date: "),
-                ReviewText(text: toDate, textTitle: "To Date: "),
+                ReviewText(
+                    text: "${fromDate}".split(' ')[0],
+                    textTitle: "From Date: "),
+                ReviewText(
+                    text: "${toDate}".split(' ')[0], textTitle: "To Date: "),
                 ReviewText(text: gameArea, textTitle: "Area: "),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(20, 5, 1, 5),

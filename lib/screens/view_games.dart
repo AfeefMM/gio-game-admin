@@ -160,6 +160,7 @@ class _ViewGamesPageState extends State<ViewGamesPage> {
                   String title = gameNames[index].toString();
 
                   String toDate = gameToDates[index].toString();
+
                   String fromDate = gameFromDates[index].toString();
                   print("game name: " + index.toString() + title);
                   // String score = gameScores[index].toString();
@@ -179,8 +180,8 @@ class _ViewGamesPageState extends State<ViewGamesPage> {
                     },
                     child: GameCard(
                       title: title,
-                      toDate: toDate,
-                      fromDate: fromDate,
+                      toDate: "${toDate}".split(' ')[0],
+                      fromDate: "${fromDate}".split(' ')[0],
                       score: "0",
                       basVal: gameVal[index],
                     ),
