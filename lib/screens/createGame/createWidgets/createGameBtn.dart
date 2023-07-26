@@ -87,35 +87,15 @@ class _CreateGameBtnState extends State<CreateGameBtn> {
                     gameExist = true;
                   }
                 }
-                _showDialog("Confirm create game? ");
-                print(gameExist.toString() + " " + confirmState.toString());
-                if (!gameExist && confirmState) {
-                  // Get.to(() => MenuPage(),
-                  //     arguments: textController.staffNameController.text);
-                  for (int i = 0; i < textController.shops.value.length; i++) {
-                    // var insertGame =
-                    //     await db.insert(table: 'game_file', insertData: {
-                    //   'game_name': textController.gameNameController.text,
-                    //   'from_date': textController.gameFromDateController.text,
-                    //   'to_date': textController.gameToDateController.text,
-                    //   'store_code':
-                    //       textController.shops.value.elementAt(i).shopName,
-                    //   'game_value':
-                    //       textController.shops.value.elementAt(i).shopValue,
-                    //   'area_name': textController.shopAreaController.text,
-                    // });
-                    var insertGame = await db.query(
-                        "INSERT INTO gio_game.game_file (game_name, from_date, to_date, store_code, game_value, area_name)" +
-                            "VALUES('${textController.gameNameController.text}', '${textController.gameFromDateController.text}', '${textController.gameToDateController.text}', '${textController.shops.value.elementAt(i).shopName}', ${textController.shops.value.elementAt(i).shopValue}, '${textController.shopAreaController.text}');");
-                    Get.to(() => MenuPage(),
-                        arguments: textController.staffNameController.text);
-                    print(insertGame.toString());
-                  }
 
-                  textController.staffPassController.clear();
+                // print(gameExist.toString() + " " + confirmState.toString());
+                if (!gameExist) {
+                  _showDialog("Confirm create game? ", db);
 
-                  db.close();
-                  confirmState = false;
+                  setState(() {
+                    confirmState = false;
+                  });
+
                   //Get.to(() => MenuPage());
                 }
                 //insert row
@@ -146,6 +126,21 @@ class _CreateGameBtnState extends State<CreateGameBtn> {
         ));
   }
 
+  void insertGame(db) async {
+    for (int i = 0; i < textController.shops.value.length; i++) {
+      var insertGame = await db.query(
+          "INSERT INTO gio_game.game_file (game_name, from_date, to_date, store_code, game_value, area_name)" +
+              "VALUES('${textController.gameNameController.text}', '${textController.gameFromDateController.text}', '${textController.gameToDateController.text}', '${textController.shops.value.elementAt(i).shopName}', ${textController.shops.value.elementAt(i).shopValue}, '${textController.shopAreaController.text}');");
+      Get.to(() => MenuPage(),
+          arguments: textController.staffNameController.text);
+      print(insertGame.toString());
+    }
+
+    textController.staffPassController.clear();
+
+    db.close();
+  }
+
   bool compareDates() {
     var fromD = textController.fromDate;
     var toD = textController.toDate;
@@ -160,7 +155,7 @@ class _CreateGameBtnState extends State<CreateGameBtn> {
 
   bool _isDialogShowing = false;
 
-  void _showDialog(String text) {
+  void _showDialog(String text, db) {
     _isDialogShowing = true; // set it `true` since dialog is being displayed
     showDialog(
       context: context,
@@ -197,6 +192,7 @@ class _CreateGameBtnState extends State<CreateGameBtn> {
                 style: TextStyle(color: AppColours.btnTextColour),
               ),
               onPressed: () {
+                insertGame(db);
                 setState(() {
                   confirmState = true;
                 });
