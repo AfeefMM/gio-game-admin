@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -12,6 +13,10 @@ import 'select_shops.dart';
 class CreateGamePageStep extends StatefulWidget {
   @override
   State<CreateGamePageStep> createState() => _CreateGamePageStepState();
+
+  CreateGamePageStep({
+    Key? key,
+  }) : super(key: key);
 }
 
 final textController = Get.put(TextController());
@@ -22,13 +27,15 @@ class _CreateGamePageStepState extends State<CreateGamePageStep> {
   @override
   void initState() {
     // TODO: implement initState
-    textController.gameNameController.clear();
-    textController.gameFromDateController.clear();
-    textController.gameToDateController.clear();
-    textController.shops.value.clear();
-    textController.isFromSelected = false;
-    textController.isToSelected = false;
-    textController.shopAreaController.clear();
+    if (!textController.updateMode) {
+      textController.gameNameController.clear();
+      textController.gameFromDateController.clear();
+      textController.gameToDateController.clear();
+      textController.shops.value.clear();
+      textController.isFromSelected = false;
+      textController.isToSelected = false;
+      textController.shopAreaController.clear();
+    }
 
     super.initState();
   }

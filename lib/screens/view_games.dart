@@ -171,11 +171,12 @@ class _ViewGamesPageState extends State<ViewGamesPage> {
                       // print("tapped score: " + score); //this works well
                       //pass the score and base value of game
                       // currGameID = gameIDs[index]; //get game ID
+
                       Get.to(
                           () => ReviewPage(
                                 title: title,
-                                fromDate: fromDate,
-                                toDate: toDate,
+                                fromDate: textController.fromDate.toString(),
+                                toDate: textController.toDate.toString(),
                               ),
                           arguments: [staffName]);
                     },

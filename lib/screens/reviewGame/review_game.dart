@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:gio_game_admin/screens/createGame/create_game_1.dart';
 import 'package:gio_game_admin/screens/menu.dart';
 import 'package:gio_game_admin/screens/view_games.dart';
 import 'package:gio_game_admin/utils/dimensions.dart';
@@ -77,12 +78,15 @@ class _ReviewPageState extends State<ReviewPage> {
       listOfShops = [];
       listOfVals = [];
 
+      String fdate = widget.fromDate.split(' ')[0];
+      String tdate = widget.toDate.split(' ')[0];
+
       var row = await db.query('SELECT * from game_file;');
       var numOfGames = row.numOfRows; //number of games
       for (int i = 0; i < numOfGames; i++) {
         if (row.rows[i]['game_name'] == widget.title &&
-            row.rows[i]['from_date'] == widget.fromDate &&
-            row.rows[i]['to_date'] == widget.toDate) {
+            row.rows[i]['from_date'] == fdate &&
+            row.rows[i]['to_date'] == tdate) {
           gameName = row.rows[i]['game_name'];
           fromDate = row.rows[i]['from_date'];
           toDate = row.rows[i]['to_date'];
@@ -143,6 +147,8 @@ class _ReviewPageState extends State<ReviewPage> {
                               if (index == 0) {
                                 //pass to update
                                 print("update");
+                                //add function to update controllers with values
+                                Get.to(() => CreateGamePageStep());
                               }
                               if (index == 1) {
                                 //delete function and go to menu page
@@ -260,6 +266,20 @@ class _ReviewPageState extends State<ReviewPage> {
             );
           },
         ));
+  }
+
+  void updateControllers() {
+    setState(() {
+      // textController.isFromSelected = true;
+      // textController.updateMode = true;
+      // textController.gameNameController.text = gameName;
+      // textController.fromDate = DateTime.parse(fromDate);
+      // textController.fromDate = DateTime.parse(toDate);
+      // textController.shopAreaController.text = gameArea;
+      // for (int i = 0; i < listOfShops.length; i++) {
+      //   textController.addShopValue(listOfShops[i], listOfVals[i]);
+      // }
+    });
   }
 
   void deleteGame() async {

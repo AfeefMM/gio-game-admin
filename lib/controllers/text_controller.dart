@@ -23,6 +23,8 @@ class TextController extends GetxController {
 
   bool isNumber = false;
 
+  bool updateMode = false;
+
   Rx<List<ShopModel>> shops = Rx<List<ShopModel>>([]);
   late ShopModel shopModel;
   var shopCount = 0.obs;
