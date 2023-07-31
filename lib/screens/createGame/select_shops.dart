@@ -121,11 +121,11 @@ class _SelectShopsPageState extends State<SelectShopsPage> {
                   itemCount: shopList.length,
                   itemBuilder: (context, index) {
                     _shopValController.add(TextEditingController());
-                    return Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.fromLTRB(1, 20, 1, 20),
+                          padding: const EdgeInsets.fromLTRB(1, 1, 1, 20),
                           child: TextLabel(
                             text: shopList[index],
                             color: AppColours.blueColour,

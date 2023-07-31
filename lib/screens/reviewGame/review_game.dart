@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gio_game_admin/screens/createGame/create_game_1.dart';
 import 'package:gio_game_admin/screens/menu.dart';
+import 'package:gio_game_admin/screens/updateGame/update_screen.dart';
 import 'package:gio_game_admin/screens/view_games.dart';
 import 'package:gio_game_admin/utils/dimensions.dart';
 import 'package:modal_side_sheet/modal_side_sheet.dart';
@@ -106,7 +107,7 @@ class _ReviewPageState extends State<ReviewPage> {
     }
   }
 
-  List<String> sideList = ["Update", "Delete"];
+  List<String> sideList = ["Update", "Delete", "Close"];
 
   @override
   Widget build(BuildContext context) {
@@ -134,13 +135,12 @@ class _ReviewPageState extends State<ReviewPage> {
                       context: context,
                       ignoreAppBar: true,
                       body: ListView.builder(
-                        itemCount: 2,
+                        itemCount: sideList.length,
                         itemBuilder: (context, index) {
                           Icon icon = Icon(Icons.delete);
-                          String text = "Delete";
+                          String text = sideList[index];
                           if (index == 0) {
                             icon = Icon(Icons.update);
-                            text = "Update";
                           }
                           return GestureDetector(
                             onTap: () {
@@ -148,11 +148,18 @@ class _ReviewPageState extends State<ReviewPage> {
                                 //pass to update
                                 print("update");
                                 //add function to update controllers with values
-                                Get.to(() => CreateGamePageStep());
+                                Get.to(() => UpdatePage(
+                                      title: gameName,
+                                      fromDate: fromDate,
+                                      toDate: toDate,
+                                    ));
                               }
                               if (index == 1) {
                                 //delete function and go to menu page
                                 _showDialog("Confirm delete game?");
+                              }
+                              if (index == 2) {
+                                Get.back();
                               }
                             },
                             child: ListTile(

@@ -3,24 +3,25 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:gio_game_admin/model/shop_model.dart';
 import 'package:gio_game_admin/screens/login.dart';
-import '../controllers/text_controller.dart';
-import '../utils/colours.dart';
-import '../utils/dimensions.dart';
 
-class TextF extends StatelessWidget {
+import '../../controllers/text_controller.dart';
+import '../../utils/colours.dart';
+import '../../utils/dimensions.dart';
+
+class UpdateTextF extends StatelessWidget {
   Color? color;
   final String text;
   var controller;
-  double shopVal;
+  String shopVal;
   String value;
   int index;
   double size;
   TextOverflow overflow;
   FontWeight fontWeight;
-  TextF(
+  UpdateTextF(
       {Key? key,
       this.color = Colors.black,
-      this.shopVal = 0,
+      this.shopVal = "",
       required this.text,
       required this.controller,
       this.value = "",
@@ -35,18 +36,15 @@ class TextF extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textController = Get.put(TextController());
-    bool pass = false;
-    if (text == "Password") {
-      pass = true;
-    }
-    //textController.focusNodes.add(FocusNode());
+    controller.text = shopVal;
+
     focusNode1.addListener(
       () {
         bool shopNameExists = false;
         if (!focusNode1.hasFocus && text == "0") {
           for (int i = 0; i < textController.shops.value.length; i++) {
             if (textController.shops.value.elementAt(i).shopName == value) {
-              shopNameExists = true;
+              true;
             }
           }
           if (!shopNameExists) {
@@ -64,8 +62,7 @@ class TextF extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.fromLTRB(1, 5, 1, 20),
       child: SizedBox(
-        width:
-            textController.isNumber ? Dimensions.width200 : Dimensions.width375,
+        width: Dimensions.width200,
         child: TextField(
           focusNode: focusNode1,
           keyboardType: textController.isNumber
@@ -78,11 +75,7 @@ class TextF extends StatelessWidget {
               : [FilteringTextInputFormatter.singleLineFormatter],
           onEditingComplete: () {
             SystemChannels.textInput.invokeMethod('TextInput.hide');
-            if (controller != null) {
-              if (text == "0") {}
-            }
           },
-          obscureText: pass,
           controller: controller,
           style: const TextStyle(
             fontSize: 12,

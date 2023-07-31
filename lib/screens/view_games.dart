@@ -162,8 +162,12 @@ class _ViewGamesPageState extends State<ViewGamesPage> {
                   String toDate = gameToDates[index].toString();
 
                   String fromDate = gameFromDates[index].toString();
+
+                  textController.fromDate = DateTime.parse(fromDate);
+                  textController.toDate = DateTime.parse(toDate);
+
                   // var gameID = int.parse(gameIDs[index]);
-                  print("game name: " + index.toString() + title);
+
                   // String score = gameScores[index].toString();
 
                   return GestureDetector(
@@ -175,8 +179,8 @@ class _ViewGamesPageState extends State<ViewGamesPage> {
                       Get.to(
                           () => ReviewPage(
                                 title: title,
-                                fromDate: textController.fromDate.toString(),
-                                toDate: textController.toDate.toString(),
+                                fromDate: fromDate.toString(),
+                                toDate: toDate.toString(),
                               ),
                           arguments: [staffName]);
                     },
