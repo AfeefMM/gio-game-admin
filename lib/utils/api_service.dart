@@ -11,8 +11,7 @@ class ApiService {
       var response = await http.get(url);
       if (response.statusCode == 200) {
         List<ControlFile> _model = userModelFromJson(response.body);
-        // List<ControlFile> _model = Contro(response.body);
-        print("response: ");
+
         return _model;
       }
     } catch (e) {

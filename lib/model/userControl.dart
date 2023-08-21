@@ -4,23 +4,23 @@ class ControlFile {
   ControlFile({
     required this.staffId,
     required this.name,
-    required this.password,
+    required this.passwword,
   });
 
   int? staffId;
   String? name;
-  String? password;
+  String? passwword;
 
   factory ControlFile.fromJson(Map<String, dynamic> json) => ControlFile(
         staffId: json["staff_id"],
         name: json["name"],
-        password: json["password"],
+        passwword: json["passwword"],
       );
 
   Map<String, dynamic> toJson() => {
         "staff_id": staffId,
         "name": name,
-        "password": password,
+        "passwword": passwword,
       };
 }
 

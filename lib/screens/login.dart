@@ -16,22 +16,22 @@ class LoginPage extends StatefulWidget {
 final textController = Get.put(TextController());
 
 class _LoginPageState extends State<LoginPage> {
-  late List<ControlFile> _userModel = [];
+  // late List<ControlFile> _userModel = [];
   @override
   void initState() {
     super.initState();
-    _getData();
+    // _getData();
   }
 
-  void _getData() async {
-    _userModel = await ApiService().getUsers();
-    Future.delayed(const Duration(seconds: 3))
-        .then((value) => setState(() {})); //change seconds
-  }
+  // void _getData() async {
+  //   _userModel = await ApiService().getUsers();
+  //   Future.delayed(const Duration(seconds: 3))
+  //       .then((value) => setState(() {})); //change seconds
+  // }
 
   @override
   Widget build(BuildContext context) {
-    print(_userModel[0].name.toString());
+    //print(_userModel[0].name.toString());
     // TODO: implement build
     return Scaffold(
       backgroundColor: AppColours.mainColor,

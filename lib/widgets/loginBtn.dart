@@ -5,7 +5,9 @@ import 'package:mysql_utils/mysql_utils.dart';
 
 import '../controllers/text_controller.dart';
 
+import '../model/userControl.dart';
 import '../screens/menu.dart';
+import '../utils/api_service.dart';
 import '../utils/colours.dart';
 import '../utils/sql_data.dart';
 
@@ -42,50 +44,24 @@ class _LoginBtnState extends State<LoginBtn> {
           child: OutlinedButton(
             onPressed: () async {
               try {
-                //             var db = await SqlConnection.connect(ConnectionSettings(
-                //   host: 'your_database_host',
-                //   port: 1433,
-                //   user: 'your_database_username',
-                //   password: 'your_database_password',
-                //   db: 'your_database_name',
-                // ));
-                var db = MysqlUtils(
-                    settings: {
-                      'host': SQLData.ip,
-                      'port': SQLData.port,
-                      'user': SQLData.username,
-                      'password': SQLData.password,
-                      'db': SQLData.databaseName,
-                      'maxConnections': 10,
-                      'secure': true,
-                      'prefix': 'prefix_',
-                      'pool': true,
-                      'collation': 'utf8mb4_general_ci',
-                      'sqlEscape': true,
-                    },
-                    errorLog: (error) {
-                      print(error);
-                    },
-                    sqlLog: (sql) {
-                      print(sql);
-                    },
-                    connectInit: (db1) async {
-                      print('whenComplete');
-                    });
+                late List<ControlFile> _userModel = [];
 
-                var row = await db.query('SELECT * from control_file;');
+                _userModel = await ApiService().getUsers();
+                Future.delayed(const Duration(seconds: 1))
+                    .then((value) => setState(() {})); //change seconds
+
                 String staffName = '';
-                //print(row.rows[0]); //{game_id: 1, staff_id: 1012, qty: 2, amount: 350.0, score: 1}
-                //print(row.rows[0]["staff_id"]); //1012 -> gives values
+
                 bool flag = false;
                 bool userExist = false;
-                for (int i = 0; i < row.numOfRows; i++) {
+                for (int i = 0; i < _userModel.length; i++) {
                   var id = textController.staffIDController.text;
                   var pass = textController.staffPassController.text;
-                  var sqlID = row.rows[i]["staff_id"];
-                  var sqlPass = row.rows[i]["password"];
+                  var sqlID = _userModel[i].staffId.toString();
+                  var sqlPass = _userModel[i].passwword;
+                  // print(sqlID!.toString() + " and " + sqlPass!);
                   if (id == sqlID && pass == sqlPass) {
-                    staffName = row.rows[i]['name'];
+                    staffName = _userModel[i].name!;
                     flag = true;
                   }
                   if (id == sqlID) {
@@ -94,7 +70,6 @@ class _LoginBtnState extends State<LoginBtn> {
                 }
 
                 if (flag) {
-                  db.close();
                   textController.staffPassController.clear();
                   textController.staffNameController.text = staffName;
                   Get.to(() => MenuPage(), arguments: staffName);
@@ -103,16 +78,6 @@ class _LoginBtnState extends State<LoginBtn> {
                 } else {
                   _showDialog("User does not exist");
                 }
-                //insert row
-                // await db.insert(
-                //   table: 'table',
-                //   debug: false,
-                //   insertData: {
-                //     'telphone': '+113888888888',
-                //     'create_time': 1620577162252,
-                //     'update_time': 1620577162252,
-                //   },
-                // );
               } catch (e) {
                 print(e);
               }
