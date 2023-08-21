@@ -36,7 +36,13 @@ class _CreateGamePageStepState extends State<CreateGamePageStep> {
       textController.isToSelected = false;
       textController.shopAreaController.clear();
     }
-
+    // textController.gameNameController.clear();
+    // textController.gameFromDateController.clear();
+    // textController.gameToDateController.clear();
+    // textController.shops.value.clear();
+    // textController.isFromSelected = false;
+    // textController.isToSelected = false;
+    // textController.shopAreaController.clear();
     super.initState();
   }
 

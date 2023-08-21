@@ -42,6 +42,13 @@ class _LoginBtnState extends State<LoginBtn> {
           child: OutlinedButton(
             onPressed: () async {
               try {
+                //             var db = await SqlConnection.connect(ConnectionSettings(
+                //   host: 'your_database_host',
+                //   port: 1433,
+                //   user: 'your_database_username',
+                //   password: 'your_database_password',
+                //   db: 'your_database_name',
+                // ));
                 var db = MysqlUtils(
                     settings: {
                       'host': SQLData.ip,

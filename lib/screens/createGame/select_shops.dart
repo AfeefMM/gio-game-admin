@@ -5,15 +5,10 @@ import 'package:gio_game_admin/screens/createGame/create_review.dart';
 import 'package:gio_game_admin/widgets/textF.dart';
 import 'package:mysql_utils/mysql_utils.dart';
 
-import 'package:gio_game_admin/screens/createGame/createWidgets/textCreateField.dart';
-import 'package:gio_game_admin/screens/reviewGame/review_game.dart';
-
 import '../../controllers/text_controller.dart';
 import '../../utils/colours.dart';
 import '../../utils/sql_data.dart';
 import '../../widgets/textLabel.dart';
-import 'createWidgets/areaDropDown.dart';
-import 'createWidgets/createDateWid.dart';
 
 class SelectShopsPage extends StatefulWidget {
   @override

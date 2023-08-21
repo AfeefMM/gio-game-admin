@@ -2,17 +2,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gio_game_admin/utils/dimensions.dart';
-import 'package:mysql_utils/mysql_utils.dart';
 
 import 'package:gio_game_admin/screens/reviewGame/review_tLabel.dart';
-import 'package:gio_game_admin/screens/view_games.dart';
-import 'package:gio_game_admin/widgets/menu_btn.dart';
 
 import '../../controllers/text_controller.dart';
 import '../../utils/colours.dart';
-import '../../utils/sql_data.dart';
 import '../../widgets/textLabel.dart';
-import '../login.dart';
 import 'createWidgets/createGameBtn.dart';
 
 class CreateReviewPage extends StatefulWidget {
@@ -63,9 +58,6 @@ class _CreateReviewPageState extends State<CreateReviewPage> {
               ),
             ],
           ),
-          actions: [
-            //side bar for delete and update
-          ],
         ),
         backgroundColor: AppColours.mainColor,
         body: Container(
@@ -136,7 +128,7 @@ class _CreateReviewPageState extends State<CreateReviewPage> {
                         String? name = textController.shops.value
                             .elementAt(index)
                             .shopName;
-                        print("name: " + name.toString());
+
                         int? value = textController.shops.value
                             .elementAt(index)
                             .shopValue;

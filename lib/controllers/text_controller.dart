@@ -74,6 +74,9 @@ class TextController extends GetxController {
     shops.value.clear();
     isFromSelected = false;
     isToSelected = false;
+    shopAreaController.clear();
+    fromDate = DateTime(2017, 9, 7, 17);
+    toDate = DateTime(2017, 9, 7, 17);
   }
 
   clearShop() {
