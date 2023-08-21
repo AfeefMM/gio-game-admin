@@ -12,6 +12,8 @@ import 'package:mysql_utils/mysql_utils.dart';
 import 'package:gio_game_admin/screens/reviewGame/review_tLabel.dart';
 
 import '../../controllers/text_controller.dart';
+import '../../model/gameFile.dart';
+import '../../utils/api_service.dart';
 import '../../utils/colours.dart';
 import '../../utils/sql_data.dart';
 import '../../widgets/textLabel.dart';
@@ -46,31 +48,12 @@ class _ReviewPageState extends State<ReviewPage> {
     super.initState();
   }
 
+  List<GameFile> gamesList = [];
   Future<void> getSQLData() async {
     try {
-      var db = MysqlUtils(
-          settings: {
-            'host': SQLData.ip,
-            'port': SQLData.port,
-            'user': SQLData.username,
-            'password': SQLData.password,
-            'db': SQLData.databaseName,
-            'maxConnections': 10,
-            'secure': true,
-            'prefix': 'prefix_',
-            'pool': true,
-            'collation': 'utf8mb4_general_ci',
-            'sqlEscape': true,
-          },
-          errorLog: (error) {
-            print(error);
-          },
-          sqlLog: (sql) {
-            print(sql);
-          },
-          connectInit: (db1) async {
-            print('whenComplete');
-          });
+      gamesList = await ApiService().getGameFileData();
+      Future.delayed(const Duration(seconds: 1))
+          .then((value) => setState(() {}));
 
       gameName = "";
       fromDate = "";
@@ -79,29 +62,22 @@ class _ReviewPageState extends State<ReviewPage> {
       listOfShops = [];
       listOfVals = [];
 
-      String fdate = widget.fromDate.split(' ')[0];
-      String tdate = widget.toDate.split(' ')[0];
+      String fdate = widget.fromDate.split('T')[0];
+      String tdate = widget.toDate.split('T')[0];
 
-      var row = await db.query('SELECT * from game_file;');
-      var numOfGames = row.numOfRows; //number of games
+      var numOfGames = gamesList.length; //number of games
       for (int i = 0; i < numOfGames; i++) {
-        if (row.rows[i]['game_name'] == widget.title &&
-            row.rows[i]['from_date'] == fdate &&
-            row.rows[i]['to_date'] == tdate) {
-          gameName = row.rows[i]['game_name'];
-          fromDate = row.rows[i]['from_date'];
-          toDate = row.rows[i]['to_date'];
-          gameArea = row.rows[i]['area_name'];
-          listOfShops.add(row.rows[i]['store_code']);
-          listOfVals.add(row.rows[i]['game_value']);
-
-          // listOfShops.add(row.rows[i]['store_code']) = ; //need area name
+        if (gamesList[i].gameName == widget.title &&
+            gamesList[i].fromDate?.split('T')[0] == fdate &&
+            gamesList[i].toDate?.split('T')[0] == tdate) {
+          gameName = gamesList[i].gameName;
+          fromDate = gamesList[i].fromDate?.split('T')[0];
+          toDate = gamesList[i].fromDate?.split('T')[0];
+          gameArea = gamesList[i].areaName;
+          listOfShops.add(gamesList[i].storeCode);
+          listOfVals.add(gamesList[i].gameValue);
         }
       }
-
-      db.close();
-      //print(row.rows[0]); //{game_id: 1, staff_id: 1012, qty: 2, amount: 350.0, score: 1}
-      //print(row.rows[0]["staff_id"]); //1012 -> gives values
     } catch (e) {
       print(e);
     }
