@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class GameFile {
   GameFile({
     required this.gameID,
@@ -9,13 +11,13 @@ class GameFile {
     required this.gameValue,
   });
 
-  int gameID;
-  String gameName;
-  String fromDate;
-  String areaName;
-  String toDate;
-  String storeCode;
-  String gameValue;
+  int? gameID;
+  String? gameName;
+  String? fromDate;
+  String? areaName;
+  String? toDate;
+  String? storeCode;
+  int? gameValue;
 
   factory GameFile.fromJson(Map<String, dynamic> json) => GameFile(
         gameID: json["gameID"],
@@ -37,3 +39,9 @@ class GameFile {
         "gameValue": gameValue,
       };
 }
+
+List<GameFile> gameFileFromJson(String str) =>
+    List<GameFile>.from(json.decode(str).map((x) => GameFile.fromJson(x)));
+
+String gameFileToJson(List<GameFile> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));

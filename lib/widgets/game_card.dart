@@ -11,7 +11,6 @@ class GameCard extends StatefulWidget {
   String toDate;
   String fromDate;
   String score;
-  double basVal;
 
   GameCard({
     Key? key,
@@ -19,7 +18,6 @@ class GameCard extends StatefulWidget {
     required this.toDate,
     required this.fromDate,
     required this.score,
-    required this.basVal,
   }) : super(key: key);
 
   @override

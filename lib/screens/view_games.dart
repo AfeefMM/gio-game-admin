@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gio_game_admin/screens/reviewGame/review_game.dart';
+import 'package:gio_game_admin/utils/apis.dart';
 
 import 'package:mysql_utils/mysql_utils.dart';
 
 import '../controllers/text_controller.dart';
 
+import '../model/gameFile.dart';
+import '../utils/api_service.dart';
 import '../utils/colours.dart';
 import '../utils/sql_data.dart';
 import '../widgets/game_card.dart';
@@ -18,6 +21,8 @@ class ViewGamesPage extends StatefulWidget {
 }
 
 final textController = Get.put(TextController());
+List<GameFile> gamesList = [];
+
 var gameNames = [];
 var gameIDs = [];
 var gameFromDates = [];
@@ -40,41 +45,9 @@ class _ViewGamesPageState extends State<ViewGamesPage> {
 
   Future<void> getSQLData() async {
     try {
-      var db = MysqlUtils(
-          settings: {
-            'host': SQLData.ip,
-            'port': SQLData.port,
-            'user': SQLData.username,
-            'password': SQLData.password,
-            'db': SQLData.databaseName,
-            'maxConnections': 10,
-            'secure': true,
-            'prefix': 'prefix_',
-            'pool': true,
-            'collation': 'utf8mb4_general_ci',
-            'sqlEscape': true,
-          },
-          errorLog: (error) {
-            print(error);
-          },
-          sqlLog: (sql) {
-            print(sql);
-          },
-          connectInit: (db1) async {
-            print('whenComplete');
-          });
-
-      // var row = await db.query('SELECT * from result_file');
-      // numOfGames = row.numOfRows; //number of games
-
-      // for (int i = 0; i < numOfGames; i++) {
-      //   amounts.add(row.rows[i]['amount']);
-      //   qtys.add(row.rows[i]['qty']);
-      //   gameScores.add(row.rows[i]['score'].toString());
-      //   gameIDs.add(row.rows[i]['game_id']);
-      //   int gameID = gameIDs[i];
-      //   // var query = await db.query(
-      //   //     "SELECT * from game_file where game_id =" + gameID.toString());
+      gamesList = await ApiService().getGameFileData();
+      Future.delayed(const Duration(seconds: 1))
+          .then((value) => setState(() {}));
 
       gameNames = [];
       gameIDs = [];
@@ -84,40 +57,26 @@ class _ViewGamesPageState extends State<ViewGamesPage> {
       gameVal = [];
       numOfGames = 0;
 
-      var query = await db.query('select * from game_file');
-      numOfGames = query.numOfRows;
+      numOfGames = gamesList.length;
 
-      // gameNames.add(query.rows[0]['game_name']);
-      // gameIDs.add(query.rows[0]['game_id']);
-      // gameFromDates.add(query.rows[0]['from_date']);
-      // gameToDates.add(query.rows[0]['to_date']);
-      // gameVal.add(query.rows[0]['game_value']);
-
-      for (int j = 0; j < query.numOfRows; j++) {
+      for (int j = 0; j < gamesList.length; j++) {
         // if (query.rows[j]['game_id'] == gameID) {
         bool nameExists = false;
         for (int i = 0; i < gameNames.length; i++) {
-          if (gameNames[i] == query.rows[j]['game_name'] &&
-              gameFromDates[i] == query.rows[j]['from_date'] &&
-              gameToDates[i] == query.rows[j]['to_date']) {
+          if (gameNames[i] == gamesList[j].gameName &&
+              gameFromDates[i] == gamesList[j].fromDate &&
+              gameToDates[i] == gamesList[j].toDate) {
             nameExists = true;
           }
         }
         if (!nameExists) {
-          gameNames.add(query.rows[j]['game_name']);
-          gameIDs.add(query.rows[j]['game_id']);
-          gameFromDates.add(query.rows[j]['from_date']);
-          gameToDates.add(query.rows[j]['to_date']);
-          gameVal.add(query.rows[j]['game_value']);
+          gameNames.add(gamesList[j].gameName);
+          gameIDs.add(gamesList[j].gameID);
+          gameFromDates.add(gamesList[j].fromDate);
+          gameToDates.add(gamesList[j].toDate);
+          gameVal.add(gamesList[j].gameValue);
         }
-
-        // }
       }
-
-      // }
-      db.close();
-      //print(row.rows[0]); //{game_id: 1, staff_id: 1012, qty: 2, amount: 350.0, score: 1}
-      //print(row.rows[0]["staff_id"]); //1012 -> gives values
     } catch (e) {
       print(e);
     }
@@ -186,10 +145,9 @@ class _ViewGamesPageState extends State<ViewGamesPage> {
                     },
                     child: GameCard(
                       title: title,
-                      toDate: "${toDate}".split(' ')[0],
-                      fromDate: "${fromDate}".split(' ')[0],
+                      toDate: toDate.split('T')[0],
+                      fromDate: fromDate.split('T')[0],
                       score: "0",
-                      basVal: gameVal[index],
                     ),
                   );
                 }),
