@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-import 'package:mysql_utils/mysql_utils.dart';
+import 'package:gio_game_admin/model/gameFile.dart';
 
 import '../../../controllers/text_controller.dart';
+import '../../../utils/api_service.dart';
 import '../../../utils/colours.dart';
-import '../../../utils/sql_data.dart';
 import '../../menu.dart';
 
 class CreateGameBtn extends StatefulWidget {
@@ -43,44 +42,25 @@ class _CreateGameBtnState extends State<CreateGameBtn> {
           child: OutlinedButton(
             onPressed: () async {
               try {
-                var db = MysqlUtils(
-                    settings: {
-                      'host': SQLData.ip,
-                      'port': SQLData.port,
-                      'user': SQLData.username,
-                      'password': SQLData.password,
-                      'db': SQLData.databaseName,
-                      'maxConnections': 10,
-                      'secure': true,
-                      'prefix': 'prefix_',
-                      'pool': true,
-                      'collation': 'utf8mb4_general_ci',
-                      'sqlEscape': true,
-                    },
-                    errorLog: (error) {
-                      print(error);
-                    },
-                    sqlLog: (sql) {
-                      print(sql);
-                    },
-                    connectInit: (db1) async {
-                      print('whenComplete');
-                    });
+                List<GameFile> gamesList = [];
 
-                var row = await db.query('SELECT * from game_file;');
+                gamesList = await ApiService().getGameFileData();
+                Future.delayed(const Duration(seconds: 1))
+                    .then((value) => setState(() {}));
+
                 String fromDate = '';
                 String toDate = '';
                 String gameName = '';
                 //shifted below from top of func
                 bool gameExist = false;
-                for (int i = 0; i < row.numOfRows; i++) {
+                for (int i = 0; i < gamesList.length; i++) {
                   var name = textController.gameNameController.text;
                   var from = textController.gameFromDateController.text;
                   var to = textController.gameToDateController.text;
 
-                  fromDate = row.rows[i]["from_date"];
-                  toDate = row.rows[i]["to_date"];
-                  gameName = row.rows[i]["game_name"];
+                  fromDate = gamesList[i].fromDate!.split('T')[0];
+                  toDate = gamesList[i].toDate!.split('T')[0];
+                  gameName = gamesList[i].gameName!;
 
                   if (gameName == name && fromDate == from && toDate == to) {
                     // staffName = row.rows[i]['name'];
@@ -90,7 +70,7 @@ class _CreateGameBtnState extends State<CreateGameBtn> {
 
                 // print(gameExist.toString() + " " + confirmState.toString());
                 if (!gameExist) {
-                  _showDialog("Confirm create game? ", db);
+                  _showDialog("Confirm create game? ");
 
                   setState(() {
                     confirmState = false;
@@ -98,16 +78,6 @@ class _CreateGameBtnState extends State<CreateGameBtn> {
 
                   //Get.to(() => MenuPage());
                 }
-                //insert row
-                // await db.insert(
-                //   table: 'table',
-                //   debug: false,
-                //   insertData: {
-                //     'telphone': '+113888888888',
-                //     'create_time': 1620577162252,
-                //     'update_time': 1620577162252,
-                //   },
-                // );
               } catch (e) {
                 print(e);
               }
@@ -126,19 +96,15 @@ class _CreateGameBtnState extends State<CreateGameBtn> {
         ));
   }
 
-  void insertGame(db) async {
+  void insertGame() async {
     for (int i = 0; i < textController.shops.value.length; i++) {
-      var insertGame = await db.query(
-          "INSERT INTO gio_game.game_file (game_name, from_date, to_date, store_code, game_value, area_name)" +
-              "VALUES('${textController.gameNameController.text}', '${textController.gameFromDateController.text}', '${textController.gameToDateController.text}', '${textController.shops.value.elementAt(i).shopName}', ${textController.shops.value.elementAt(i).shopValue}, '${textController.shopAreaController.text}');");
+      ApiService().createGameFile(textController, i);
+      // print("game created");
       Get.to(() => MenuPage(),
           arguments: textController.staffNameController.text);
-      print(insertGame.toString());
     }
 
     textController.staffPassController.clear();
-
-    db.close();
   }
 
   bool compareDates() {
@@ -155,7 +121,7 @@ class _CreateGameBtnState extends State<CreateGameBtn> {
 
   bool _isDialogShowing = false;
 
-  void _showDialog(String text, db) {
+  void _showDialog(String text) {
     _isDialogShowing = true; // set it `true` since dialog is being displayed
     showDialog(
       context: context,
@@ -192,7 +158,7 @@ class _CreateGameBtnState extends State<CreateGameBtn> {
                 style: TextStyle(color: AppColours.btnTextColour),
               ),
               onPressed: () {
-                insertGame(db);
+                insertGame();
                 setState(() {
                   confirmState = true;
                 });

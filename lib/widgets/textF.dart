@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:gio_game_admin/model/shop_model.dart';
-import 'package:gio_game_admin/screens/login.dart';
 import '../controllers/text_controller.dart';
 import '../utils/colours.dart';
 import '../utils/dimensions.dart';

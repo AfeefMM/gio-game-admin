@@ -82,33 +82,4 @@ class TextController extends GetxController {
   clearShop() {
     shops.value.clear();
   }
-
-  MysqlUtils? initiateDBConn() {
-    try {
-      var db = MysqlUtils(
-          settings: {
-            'host': SQLData.ip,
-            'port': SQLData.port,
-            'user': SQLData.username,
-            'password': SQLData.password,
-            'db': SQLData.databaseName,
-            'maxConnections': 10,
-            'secure': true,
-            'prefix': 'prefix_',
-            'pool': true,
-            'collation': 'utf8mb4_general_ci',
-            'sqlEscape': true,
-          },
-          errorLog: (error) {
-            print(error);
-          },
-          sqlLog: (sql) {
-            print(sql);
-          },
-          connectInit: (db1) async {
-            print('whenComplete');
-          });
-      return db;
-    } catch (e) {}
-  }
 }

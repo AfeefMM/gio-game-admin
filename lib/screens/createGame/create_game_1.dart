@@ -1,6 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:gio_game_admin/model/gameFile.dart';
+import 'package:gio_game_admin/utils/api_service.dart';
 
 import '../../controllers/text_controller.dart';
 import '../../utils/colours.dart';
@@ -179,25 +181,27 @@ class _CreateGamePageStepState extends State<CreateGamePageStep> {
 
   Future<bool> gameExistChecker() async {
     try {
-      var db = textController.initiateDBConn();
+      List<GameFile> listOfGames = [];
+      listOfGames = await ApiService().getGameFileData();
+      Future.delayed(const Duration(seconds: 1))
+          .then((value) => setState(() {}));
 
-      var row = await db!.query('SELECT * from game_file;');
       String fromDate = '';
       String toDate = '';
       String gameName = '';
       String areaName = '';
       //shifted below from top of func
       bool gameExist = false;
-      for (int i = 0; i < row.numOfRows; i++) {
+      for (int i = 0; i < listOfGames.length; i++) {
         var name = textController.gameNameController.text;
         var from = textController.gameFromDateController.text;
         var to = textController.gameToDateController.text;
         var area = textController.shopAreaController.text;
 
-        fromDate = row.rows[i]["from_date"];
-        toDate = row.rows[i]["to_date"];
-        gameName = row.rows[i]["game_name"];
-        areaName = row.rows[i]['area_name'];
+        fromDate = listOfGames[i].fromDate!.split('T')[0];
+        toDate = listOfGames[i].fromDate!.split('T')[0];
+        gameName = listOfGames[i].gameName!;
+        areaName = listOfGames[i].areaName!;
 
         if (gameName == name &&
             fromDate == from &&

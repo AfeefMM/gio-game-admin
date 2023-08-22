@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class Games {
   Games({
     required this.gameId,
@@ -17,3 +19,9 @@ class Games {
         "gameName": gameName,
       };
 }
+
+List<Games> gamesFromJson(String str) =>
+    List<Games>.from(json.decode(str).map((x) => Games.fromJson(x)));
+
+String gamesToJson(List<Games> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));

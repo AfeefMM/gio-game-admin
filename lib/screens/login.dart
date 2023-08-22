@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:gio_game_admin/model/userControl.dart';
 
 import '../controllers/text_controller.dart';
-import '../utils/api_service.dart';
 import '../utils/colours.dart';
 import '../widgets/loginBtn.dart';
 import '../widgets/textF.dart';

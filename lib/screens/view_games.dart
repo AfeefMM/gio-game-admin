@@ -1,18 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gio_game_admin/screens/reviewGame/review_game.dart';
-import 'package:gio_game_admin/utils/apis.dart';
-
-import 'package:mysql_utils/mysql_utils.dart';
 
 import '../controllers/text_controller.dart';
 
 import '../model/gameFile.dart';
 import '../utils/api_service.dart';
 import '../utils/colours.dart';
-import '../utils/sql_data.dart';
 import '../widgets/game_card.dart';
-import '../widgets/textLabel.dart';
 import 'login.dart';
 
 class ViewGamesPage extends StatefulWidget {
@@ -71,7 +66,7 @@ class _ViewGamesPageState extends State<ViewGamesPage> {
         }
         if (!nameExists) {
           gameNames.add(gamesList[j].gameName);
-          gameIDs.add(gamesList[j].gameID);
+          gameIDs.add(gamesList[j].gameId);
           gameFromDates.add(gamesList[j].fromDate);
           gameToDates.add(gamesList[j].toDate);
           gameVal.add(gamesList[j].gameValue);
@@ -109,50 +104,45 @@ class _ViewGamesPageState extends State<ViewGamesPage> {
         ],
       ),
       backgroundColor: AppColours.mainColor,
-      body: FutureBuilder(
-        future: getSQLData(),
-        builder: (context, snapshot) {
-          return Container(
-            child: ListView.builder(
-                itemCount: gameNames.length,
-                itemBuilder: (context, index) {
-                  String title = gameNames[index].toString();
+      body: Container(
+        child: ListView.builder(
+            itemCount: gameNames.length,
+            itemBuilder: (context, index) {
+              String title = gameNames[index].toString();
 
-                  String toDate = gameToDates[index].toString();
+              String toDate = gameToDates[index].toString();
 
-                  String fromDate = gameFromDates[index].toString();
+              String fromDate = gameFromDates[index].toString();
 
-                  textController.fromDate = DateTime.parse(fromDate);
-                  textController.toDate = DateTime.parse(toDate);
+              textController.fromDate = DateTime.parse(fromDate);
+              textController.toDate = DateTime.parse(toDate);
 
-                  // var gameID = int.parse(gameIDs[index]);
+              // var gameID = int.parse(gameIDs[index]);
 
-                  // String score = gameScores[index].toString();
+              // String score = gameScores[index].toString();
 
-                  return GestureDetector(
-                    onTap: () {
-                      // print("tapped score: " + score); //this works well
-                      //pass the score and base value of game
-                      // currGameID = gameIDs[index]; //get game ID
+              return GestureDetector(
+                onTap: () {
+                  // print("tapped score: " + score); //this works well
+                  //pass the score and base value of game
+                  // currGameID = gameIDs[index]; //get game ID
 
-                      Get.to(
-                          () => ReviewPage(
-                                title: title,
-                                fromDate: fromDate.toString(),
-                                toDate: toDate.toString(),
-                              ),
-                          arguments: [staffName]);
-                    },
-                    child: GameCard(
-                      title: title,
-                      toDate: toDate.split('T')[0],
-                      fromDate: fromDate.split('T')[0],
-                      score: "0",
-                    ),
-                  );
-                }),
-          );
-        },
+                  Get.to(
+                      () => ReviewPage(
+                            title: title,
+                            fromDate: fromDate.toString(),
+                            toDate: toDate.toString(),
+                          ),
+                      arguments: [staffName]);
+                },
+                child: GameCard(
+                  title: title,
+                  toDate: toDate.split('T')[0],
+                  fromDate: fromDate.split('T')[0],
+                  score: "0",
+                ),
+              );
+            }),
       ),
     );
   }

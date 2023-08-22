@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'package:mysql_utils/mysql_utils.dart';
 
 import '../controllers/text_controller.dart';
 
@@ -9,7 +8,6 @@ import '../model/userControl.dart';
 import '../screens/menu.dart';
 import '../utils/api_service.dart';
 import '../utils/colours.dart';
-import '../utils/sql_data.dart';
 
 class LoginBtn extends StatefulWidget {
   Color? color;

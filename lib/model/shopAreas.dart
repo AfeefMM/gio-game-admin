@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class ShopAreas {
   ShopAreas({
     required this.id,
@@ -17,3 +19,9 @@ class ShopAreas {
         "areaName": areaName,
       };
 }
+
+List<ShopAreas> shopAreasFromJson(String str) =>
+    List<ShopAreas>.from(json.decode(str).map((x) => ShopAreas.fromJson(x)));
+
+String shopAreasToJson(List<ShopAreas> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));

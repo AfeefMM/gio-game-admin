@@ -9,6 +9,7 @@ import '../../controllers/text_controller.dart';
 import '../../utils/colours.dart';
 import '../../widgets/textLabel.dart';
 import 'createWidgets/createGameBtn.dart';
+import 'create_game_1.dart';
 
 class CreateReviewPage extends StatefulWidget {
   @override
@@ -18,8 +19,6 @@ class CreateReviewPage extends StatefulWidget {
     Key? key,
   }) : super(key: key);
 }
-
-final textController = Get.put(TextController());
 
 //final gameData = <List<String>>[[]];
 
@@ -42,7 +41,7 @@ class _CreateReviewPageState extends State<CreateReviewPage> {
 
   @override
   Widget build(BuildContext context) {
-    print(textController.shops.value.length);
+    print(textController.shopCount);
     //getSQLData();
     return Scaffold(
         appBar: AppBar(
@@ -132,6 +131,7 @@ class _CreateReviewPageState extends State<CreateReviewPage> {
                         int? value = textController.shops.value
                             .elementAt(index)
                             .shopValue;
+
                         return Column(
                           children: [
                             // Text(code.customerName)

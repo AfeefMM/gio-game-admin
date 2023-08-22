@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 
 class SQLData {
   static const String ip = "212.76.85.20"; //localhost

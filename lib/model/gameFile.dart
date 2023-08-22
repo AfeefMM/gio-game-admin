@@ -2,7 +2,7 @@ import 'dart:convert';
 
 class GameFile {
   GameFile({
-    required this.gameID,
+    required this.gameId,
     required this.gameName,
     required this.fromDate,
     required this.toDate,
@@ -11,7 +11,7 @@ class GameFile {
     required this.gameValue,
   });
 
-  int? gameID;
+  int? gameId;
   String? gameName;
   String? fromDate;
   String? areaName;
@@ -20,7 +20,7 @@ class GameFile {
   int? gameValue;
 
   factory GameFile.fromJson(Map<String, dynamic> json) => GameFile(
-        gameID: json["gameID"],
+        gameId: json["gameId"],
         gameName: json["gameName"],
         fromDate: json["fromDate"],
         toDate: json["toDate"],
@@ -30,7 +30,7 @@ class GameFile {
       );
 
   Map<String, dynamic> toJson() => {
-        "gameID": gameID,
+        "gameId": gameId,
         "gameName": gameName,
         "fromDate": fromDate,
         "toDate": toDate,

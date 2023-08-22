@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gio_game_admin/screens/createGame/create_review.dart';
 import 'package:gio_game_admin/widgets/textF.dart';
-import 'package:mysql_utils/mysql_utils.dart';
 
-import '../../controllers/text_controller.dart';
+import '../../model/shops.dart';
+import '../../utils/api_service.dart';
 import '../../utils/colours.dart';
-import '../../utils/sql_data.dart';
 import '../../widgets/textLabel.dart';
+import 'create_game_1.dart';
 
 class SelectShopsPage extends StatefulWidget {
   @override
@@ -20,7 +20,6 @@ class SelectShopsPage extends StatefulWidget {
   }) : super(key: key);
 }
 
-final textController = Get.put(TextController());
 List<TextEditingController> _shopValController = [];
 
 var shopList = [];
@@ -30,155 +29,129 @@ class _SelectShopsPageState extends State<SelectShopsPage> {
   void initState() {
     // TODO: implement initState
     textController.isNumber = true;
+
+    getSQLData();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    print("building select shop page");
     //getSQLData();
     _shopValController.clear(); //clears textcontroller for the shop values
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: AppColours.blueColour,
-        leading: Row(
+        appBar: AppBar(
+          backgroundColor: AppColours.blueColour,
+          leading: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              IconButton(
+                icon: const Icon(Icons.arrow_back_ios_new),
+                onPressed: () {
+                  Get.back();
+                  textController.clearVals();
+                },
+              ),
+            ],
+          ),
+        ),
+        backgroundColor: AppColours.mainColor,
+        body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            IconButton(
-              icon: const Icon(Icons.arrow_back_ios_new),
-              onPressed: () {
-                Get.back();
-                textController.clearVals();
-              },
-            ),
-          ],
-        ),
-      ),
-      backgroundColor: AppColours.mainColor,
-      body: FutureBuilder(
-          future: getSQLData(),
-          builder: (context, snapshot) {
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 40, 1, 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 40, 1, 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  TextLabel(
+                    text: "Select Shops",
+                    size: 24,
+                    color: AppColours.blueColour,
+                    fontWeight: FontWeight.w600,
+                  ),
+                  //button
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      TextLabel(
-                        text: "Select Shops",
-                        size: 24,
-                        color: AppColours.blueColour,
-                        fontWeight: FontWeight.w600,
-                      ),
-                      //button
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Padding(
-                              padding: const EdgeInsets.fromLTRB(1, 5, 30, 1),
-                              child: ButtonTheme(
-                                minWidth: 300,
-                                child: OutlinedButton(
-                                  onPressed: () async {
-                                    //onto next page
-                                    Get.to(() => CreateReviewPage());
-                                    textController.isNumber = false;
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                      padding: const EdgeInsets.fromLTRB(
-                                          1, 13, 1, 13),
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(6.0)),
-                                      backgroundColor: AppColours.blueColour,
-                                      textStyle: const TextStyle(
-                                          color: AppColours.btnTextColour)),
-                                  child: const Padding(
-                                    padding: EdgeInsets.fromLTRB(10, 1, 10, 1),
-                                    child: Text(
-                                      "Review",
-                                      style: TextStyle(
-                                          color: AppColours.btnTextColour,
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ),
+                      Padding(
+                          padding: const EdgeInsets.fromLTRB(1, 5, 30, 1),
+                          child: ButtonTheme(
+                            minWidth: 300,
+                            child: OutlinedButton(
+                              onPressed: () async {
+                                //onto next page
+                                print(_shopValController.length.toString());
+                                Get.to(() => CreateReviewPage());
+                                textController.isNumber = false;
+                              },
+                              style: ElevatedButton.styleFrom(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(1, 13, 1, 13),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(6.0)),
+                                  backgroundColor: AppColours.blueColour,
+                                  textStyle: const TextStyle(
+                                      color: AppColours.btnTextColour)),
+                              child: const Padding(
+                                padding: EdgeInsets.fromLTRB(10, 1, 10, 1),
+                                child: Text(
+                                  "Review",
+                                  style: TextStyle(
+                                      color: AppColours.btnTextColour,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold),
                                 ),
-                              )),
-                        ],
-                      ),
+                              ),
+                            ),
+                          )),
                     ],
                   ),
-                ),
-                Expanded(
-                    child: ListView.builder(
-                  itemCount: shopList.length,
-                  itemBuilder: (context, index) {
-                    _shopValController.add(TextEditingController());
-                    return Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(1, 1, 1, 20),
-                          child: TextLabel(
-                            text: shopList[index],
-                            color: AppColours.blueColour,
-                          ),
-                        ),
-                        TextF(
-                            text: "0",
-                            value: shopList[index],
-                            controller: _shopValController[index]),
-                      ],
-                    );
-                  },
-                )),
-              ],
-            );
-          }),
-    );
+                ],
+              ),
+            ),
+            Expanded(
+                child: ListView.builder(
+              itemCount: shopList.length,
+              itemBuilder: (context, index) {
+                _shopValController.add(TextEditingController());
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(1, 1, 1, 20),
+                      child: TextLabel(
+                        text: shopList[index],
+                        color: AppColours.blueColour,
+                      ),
+                    ),
+                    TextF(
+                        text: "0",
+                        value: shopList[index],
+                        controller: _shopValController[index]),
+                  ],
+                );
+              },
+            )),
+          ],
+        ));
   }
 
   Future<void> getSQLData() async {
     try {
-      var db = MysqlUtils(
-          settings: {
-            'host': SQLData.ip,
-            'port': SQLData.port,
-            'user': SQLData.username,
-            'password': SQLData.password,
-            'db': SQLData.databaseName,
-            'maxConnections': 10,
-            'secure': true,
-            'prefix': 'prefix_',
-            'pool': true,
-            'collation': 'utf8mb4_general_ci',
-            'sqlEscape': true,
-          },
-          errorLog: (error) {
-            print(error);
-          },
-          sqlLog: (sql) {
-            print(sql);
-          },
-          connectInit: (db1) async {
-            print('whenComplete');
-          });
+      List<Shops> listOfShops = [];
 
-      var query = await db.query('SELECT * from shops;');
+      listOfShops = await ApiService().getShopsData();
+      Future.delayed(const Duration(seconds: 1))
+          .then((value) => setState(() {}));
 
       shopList.clear();
 
-      for (int i = 0; i < query.numOfRows; i++) {
-        if (query.rows[i]['shop_area'] == widget.areaName) {
-          shopList.add(query.rows[i]['shop_id']);
+      for (int i = 0; i < listOfShops.length; i++) {
+        if (listOfShops[i].shopArea == widget.areaName) {
+          shopList.add(listOfShops[i].shopId);
         }
       }
-
-      db.close();
-      //print(row.rows[0]); //{game_id: 1, staff_id: 1012, qty: 2, amount: 350.0, score: 1}
-      //print(row.rows[0]["staff_id"]); //1012 -> gives values
     } catch (e) {
       print(e);
     }

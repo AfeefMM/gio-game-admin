@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_rx/src/rx_types/rx_types.dart';
-import 'package:gio_game_admin/screens/login.dart';
 import 'package:gio_game_admin/utils/colours.dart';
-import 'package:gio_game_admin/widgets/textF.dart';
 import 'package:gio_game_admin/widgets/textLabel.dart';
 
 import '../../../controllers/text_controller.dart';
