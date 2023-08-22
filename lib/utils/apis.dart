@@ -5,6 +5,7 @@ class APIVals {
   static String getAllDataCol = '/datacollection/getAll';
   static String getAllGameFile = '/gamefile/getAll';
   static String postGameFile = '/gamefile/add';
+  static String updateGameFile = '/gamefile/update/';
   static String deleteGameFile = '/gamefile/delete/';
   static String getAllGame = '/admin/games/getAll';
   static String getAllShopAreas = '/admin/shopareas/getAll';

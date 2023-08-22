@@ -7,6 +7,8 @@ import 'package:mysql_utils/mysql_utils.dart';
 import 'package:gio_game_admin/screens/reviewGame/review_tLabel.dart';
 
 import '../../controllers/text_controller.dart';
+import '../../model/gameFile.dart';
+import '../../utils/api_service.dart';
 import '../../utils/colours.dart';
 import '../../utils/sql_data.dart';
 import '../../widgets/textLabel.dart';
@@ -42,66 +44,41 @@ class _UpdatePageState extends State<UpdatePage> {
   void initState() {
     // TODO: implement initState
     textController.isNumber = true;
-
+    gameName = "";
+    fromDate = "";
+    toDate = "";
+    gameArea = "";
+    listOfShops = [];
+    listOfVals = [];
+    getSQLData();
     super.initState();
   }
 
   Future<void> getSQLData() async {
     try {
-      var db = MysqlUtils(
-          settings: {
-            'host': SQLData.ip,
-            'port': SQLData.port,
-            'user': SQLData.username,
-            'password': SQLData.password,
-            'db': SQLData.databaseName,
-            'maxConnections': 10,
-            'secure': true,
-            'prefix': 'prefix_',
-            'pool': true,
-            'collation': 'utf8mb4_general_ci',
-            'sqlEscape': true,
-          },
-          errorLog: (error) {
-            print(error);
-          },
-          sqlLog: (sql) {
-            print(sql);
-          },
-          connectInit: (db1) async {
-            print('whenComplete');
-          });
+      List<GameFile> gamesList = [];
+      gamesList = await ApiService().getGameFileData();
+      Future.delayed(const Duration(seconds: 1))
+          .then((value) => setState(() {}));
 
-      gameName = "";
-      fromDate = "";
-      toDate = "";
-      gameArea = "";
-      listOfShops = [];
-      listOfVals = [];
+      String fdate = widget.fromDate.split('T')[0];
+      String tdate = widget.toDate.split('T')[0];
 
-      String fdate = widget.fromDate.split(' ')[0];
-      String tdate = widget.toDate.split(' ')[0];
-
-      var row = await db.query('SELECT * from game_file;');
-      var numOfGames = row.numOfRows; //number of games
+      var numOfGames = gamesList.length; //number of games
       for (int i = 0; i < numOfGames; i++) {
-        if (row.rows[i]['game_name'] == widget.title &&
-            row.rows[i]['from_date'] == fdate &&
-            row.rows[i]['to_date'] == tdate) {
-          gameName = row.rows[i]['game_name'];
-          fromDate = row.rows[i]['from_date'];
-          toDate = row.rows[i]['to_date'];
-          gameArea = row.rows[i]['area_name'];
-          listOfShops.add(row.rows[i]['store_code']);
-          listOfVals.add(row.rows[i]['game_value']);
+        if (gamesList[i].gameName == widget.title &&
+            gamesList[i].fromDate!.split('T')[0] == fdate &&
+            gamesList[i].toDate!.split('T')[0] == tdate) {
+          gameName = gamesList[i].gameName;
+          fromDate = gamesList[i].fromDate!.split('T')[0];
+          toDate = gamesList[i].toDate!.split('T')[0];
+          gameArea = gamesList[i].areaName;
+          listOfShops.add(gamesList[i].storeCode);
+          listOfVals.add(gamesList[i].gameValue);
 
           // listOfShops.add(row.rows[i]['store_code']) = ; //need area name
         }
       }
-
-      db.close();
-      //print(row.rows[0]); //{game_id: 1, staff_id: 1012, qty: 2, amount: 350.0, score: 1}
-      //print(row.rows[0]["staff_id"]); //1012 -> gives values
     } catch (e) {
       print(e);
     }
@@ -126,94 +103,87 @@ class _UpdatePageState extends State<UpdatePage> {
           ),
         ),
         backgroundColor: AppColours.mainColor,
-        body: FutureBuilder(
-          future: getSQLData(),
-          builder: (context, snapshot) {
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(1, 40, 1, 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(1, 40, 1, 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  TextLabel(
+                    text: "Update Game",
+                    size: 24,
+                    color: AppColours.blueColour,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ],
+              ),
+            ),
+            ReviewText(text: gameName, textTitle: "Game Name: "),
+            ReviewText(
+                text: "${fromDate}".split(' ')[0], textTitle: "From Date: "),
+            ReviewText(text: "${toDate}".split(' ')[0], textTitle: "To Date: "),
+            ReviewText(text: gameArea, textTitle: "Area: "),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 5, 1, 5),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       TextLabel(
-                        text: "Update Game",
-                        size: 24,
+                        text: "Shops:",
                         color: AppColours.blueColour,
-                        fontWeight: FontWeight.w400,
+                        fontWeight: FontWeight.w500,
                       ),
                     ],
                   ),
-                ),
-                ReviewText(text: gameName, textTitle: "Game Name: "),
-                ReviewText(
-                    text: "${fromDate}".split(' ')[0],
-                    textTitle: "From Date: "),
-                ReviewText(
-                    text: "${toDate}".split(' ')[0], textTitle: "To Date: "),
-                ReviewText(text: gameArea, textTitle: "Area: "),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 5, 1, 5),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          TextLabel(
-                            text: "Shops:",
-                            color: AppColours.blueColour,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                Expanded(
-                    child: ListView.builder(
-                  itemCount: listOfShops.length,
-                  itemBuilder: (context, index) {
-                    _shopValController.add(TextEditingController());
-                    print("shop name: " + listOfShops[index]);
-                    print("shop val: " + listOfVals[index].toString());
+                ],
+              ),
+            ),
+            Expanded(
+                child: ListView.builder(
+              itemCount: listOfShops.length,
+              itemBuilder: (context, index) {
+                _shopValController.add(TextEditingController());
+                print("shop name: " + listOfShops[index]);
+                print("shop val: " + listOfVals[index].toString());
 
-                    textController.gameNameController.text = gameName;
-                    textController.shopAreaController.text = gameArea;
-                    textController.gameFromDateController.text =
-                        "${fromDate}".split(' ')[0];
-                    textController.gameToDateController.text =
-                        "${toDate}".split(' ')[0];
+                textController.gameNameController.text = gameName;
+                textController.shopAreaController.text = gameArea;
+                textController.gameFromDateController.text =
+                    "${fromDate}".split(' ')[0];
+                textController.gameToDateController.text =
+                    "${toDate}".split(' ')[0];
 
-                    return Column(
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(1, 1, 1, 20),
-                              child: TextLabel(
-                                text: listOfShops[index],
-                                color: AppColours.blueColour,
-                              ),
-                            ),
-                            UpdateTextF(
-                                text: "0",
-                                value: listOfShops[index].toString(),
-                                shopVal: (listOfVals[index]).toString(),
-                                controller: _shopValController[index]),
-                          ],
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(1, 1, 1, 20),
+                          child: TextLabel(
+                            text: listOfShops[index],
+                            color: AppColours.blueColour,
+                          ),
                         ),
+                        UpdateTextF(
+                            text: "0",
+                            value: listOfShops[index].toString(),
+                            shopVal: (listOfVals[index]).toString(),
+                            controller: _shopValController[index]),
                       ],
-                    );
-                  },
-                )),
-                UpdateBtn(text: "Update"),
-              ],
-            );
-          },
+                    ),
+                  ],
+                );
+              },
+            )),
+            UpdateBtn(text: "Update"),
+          ],
         ));
   }
 

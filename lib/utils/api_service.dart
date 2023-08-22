@@ -73,6 +73,40 @@ class ApiService {
     return [];
   }
 
+  Future<List<GameFile>> updateGameFile(textController, i, game_id) async {
+    var jBody = jsonEncode({
+      'gameId': game_id,
+      'gameName': textController.gameNameController.text,
+      'fromDate': textController.gameFromDateController.text,
+      'toDate': textController.gameToDateController.text,
+      'storeCode': textController.shops.value.elementAt(i).shopName,
+      'gameValue': textController.shops.value.elementAt(i).shopValue,
+      'areaName': textController.shopAreaController.text,
+    });
+    print(jBody);
+    final response = await http.put(
+      Uri.parse(APIVals.baseUrl + APIVals.updateGameFile + game_id.toString()),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jBody,
+    );
+
+    if (response.statusCode == 201) {
+      // If the server did return a 201 CREATED response,
+      // then parse the JSON.
+
+      print("game updated");
+
+      return gameFileFromJson(response.body);
+    } else {
+      // If the server did not return a 201 CREATED response,
+      // then throw an exception.
+      print(response.body);
+      throw Exception('Failed to update game.');
+    }
+  }
+
   Future<List<GameFile>> createGameFile(textController, i) async {
     var jBody = jsonEncode({
       'gameName': textController.gameNameController.text,
@@ -113,13 +147,6 @@ class ApiService {
     print(jBody);
     final delResponse = await http.delete(
         Uri.parse(APIVals.baseUrl + APIVals.deleteGameFile + i.toString()));
-    // final response = await http.post(
-    //   Uri.parse(APIVals.baseUrl + APIVals.deleteGameFile + i.toString()),
-    //   headers: <String, String>{
-    //     'Content-Type': 'application/json; charset=UTF-8',
-    //   },
-    //   body: jBody,
-    // );
 
     if (delResponse.statusCode == 200) {
       // If the server did return a 201 CREATED response,

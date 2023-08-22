@@ -6,6 +6,8 @@ import 'package:mysql_utils/mysql_utils.dart';
 import '../../../controllers/text_controller.dart';
 import '../../../utils/colours.dart';
 import '../../../utils/sql_data.dart';
+import '../../model/gameFile.dart';
+import '../../utils/api_service.dart';
 import '../menu.dart';
 
 class UpdateBtn extends StatefulWidget {
@@ -45,44 +47,23 @@ class _UpdateBtnState extends State<UpdateBtn> {
           child: OutlinedButton(
             onPressed: () async {
               try {
-                var db = MysqlUtils(
-                    settings: {
-                      'host': SQLData.ip,
-                      'port': SQLData.port,
-                      'user': SQLData.username,
-                      'password': SQLData.password,
-                      'db': SQLData.databaseName,
-                      'maxConnections': 10,
-                      'secure': true,
-                      'prefix': 'prefix_',
-                      'pool': true,
-                      'collation': 'utf8mb4_general_ci',
-                      'sqlEscape': true,
-                    },
-                    errorLog: (error) {
-                      print(error);
-                    },
-                    sqlLog: (sql) {
-                      print(sql);
-                    },
-                    connectInit: (db1) async {
-                      print('whenComplete');
-                    });
-
-                var row = await db.query('SELECT * from game_file;');
+                List<GameFile> gamesList = [];
+                gamesList = await ApiService().getGameFileData();
+                Future.delayed(const Duration(seconds: 1))
+                    .then((value) => setState(() {}));
                 String fromDate = '';
                 String toDate = '';
                 String gameName = '';
                 //shifted below from top of func
                 bool gameExist = false;
-                for (int i = 0; i < row.numOfRows; i++) {
+                for (int i = 0; i < gamesList.length; i++) {
                   var name = textController.gameNameController.text;
                   var from = textController.gameFromDateController.text;
                   var to = textController.gameToDateController.text;
 
-                  fromDate = row.rows[i]["from_date"];
-                  toDate = row.rows[i]["to_date"];
-                  gameName = row.rows[i]["game_name"];
+                  fromDate = gamesList[i].fromDate!.split("T")[0];
+                  toDate = gamesList[i].toDate!.split("T")[0];
+                  gameName = gamesList[i].gameName!;
 
                   if (gameName == name && fromDate == from && toDate == to) {
                     // staffName = row.rows[i]['name'];
@@ -90,13 +71,13 @@ class _UpdateBtnState extends State<UpdateBtn> {
                     gameExist = true;
                     print("game exists");
 
-                    game_id = (row.rows[i]['game_id']);
+                    game_id = (gamesList[i].gameId!);
                   }
                 }
 
                 // print(gameExist.toString() + " " + confirmState.toString());
                 if (gameExist) {
-                  _showDialog("Confirm update game? ", db);
+                  _showDialog("Confirm update game? ");
 
                   setState(() {
                     confirmState = false;
@@ -104,16 +85,6 @@ class _UpdateBtnState extends State<UpdateBtn> {
 
                   //Get.to(() => MenuPage());
                 }
-                //insert row
-                // await db.insert(
-                //   table: 'table',
-                //   debug: false,
-                //   insertData: {
-                //     'telphone': '+113888888888',
-                //     'create_time': 1620577162252,
-                //     'update_time': 1620577162252,
-                //   },
-                // );
               } catch (e) {
                 print(e);
               }
@@ -132,26 +103,20 @@ class _UpdateBtnState extends State<UpdateBtn> {
         ));
   }
 
-  void updateGame(db) async {
+  void updateGame() async {
     for (int i = 0; i < textController.shops.value.length; i++) {
-      // var updateGame = await db.query(
-      //     "INSERT INTO gio_game.game_file (game_name, from_date, to_date, store_code, game_value, area_name)" +
-      //         "VALUES('${textController.gameNameController.text}', '${textController.gameFromDateController.text}', '${textController.gameToDateController.text}', '${textController.shops.value.elementAt(i).shopName}', ${textController.shops.value.elementAt(i).shopValue}, '${textController.shopAreaController.text}');");
-
-      var upGame = await db.query("UPDATE gio_game.game_file " +
-          "SET game_name='${textController.gameNameController.text}', from_date='${textController.gameFromDateController.text}', to_date='${textController.gameToDateController.text}', store_code='${textController.shops.value.elementAt(i).shopName}', game_value=${textController.shops.value.elementAt(i).shopValue}, area_name='${textController.shopAreaController.text}' " +
-          "WHERE game_name like '${textController.gameNameController.text}'AND store_code='${textController.shops.value.elementAt(i).shopName}';");
+      ApiService().updateGameFile(textController, i, game_id);
+      // var upGame = await db.query("UPDATE gio_game.game_file " +
+      //     "SET game_name='${textController.gameNameController.text}', from_date='${textController.gameFromDateController.text}', to_date='${textController.gameToDateController.text}', store_code='${textController.shops.value.elementAt(i).shopName}', game_value=${textController.shops.value.elementAt(i).shopValue}, area_name='${textController.shopAreaController.text}' " +
+      //     "WHERE game_name like '${textController.gameNameController.text}'AND store_code='${textController.shops.value.elementAt(i).shopName}';");
       Get.to(() => MenuPage(),
           arguments: textController.staffNameController.text);
-      print(upGame.toString());
     }
-
-    db.close();
   }
 
   bool _isDialogShowing = false;
 
-  void _showDialog(String text, db) {
+  void _showDialog(String text) {
     _isDialogShowing = true; // set it `true` since dialog is being displayed
     showDialog(
       context: context,
@@ -188,7 +153,7 @@ class _UpdateBtnState extends State<UpdateBtn> {
                 style: TextStyle(color: AppColours.btnTextColour),
               ),
               onPressed: () {
-                updateGame(db);
+                updateGame();
                 setState(() {
                   confirmState = true;
                 });
