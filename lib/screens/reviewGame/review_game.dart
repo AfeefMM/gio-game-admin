@@ -40,6 +40,7 @@ class _ReviewPageState extends State<ReviewPage> {
   @override
   void initState() {
     // TODO: implement initState
+    textController.isNumber = false;
     gameName = "";
     fromDate = "";
     toDate = "";

@@ -21,7 +21,7 @@ class _MenuPageState extends State<MenuPage> {
   @override
   void initState() {
     // TODO: implement initState
-
+    textController.isNumber = false;
     super.initState();
   }
 

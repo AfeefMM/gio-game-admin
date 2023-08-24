@@ -22,6 +22,7 @@ var gameNames = [];
 var gameIDs = [];
 var gameFromDates = [];
 var gameToDates = [];
+var gameAreas = [];
 // var qtys = [];
 // var amounts = [];
 // var gameScores = [];
@@ -48,13 +49,21 @@ class _ViewGamesPageState extends State<ViewGamesPage> {
       gameIDs = [];
       gameFromDates = [];
       gameToDates = [];
-
+      gameAreas = [];
       gameVal = [];
       numOfGames = 0;
 
       numOfGames = gamesList.length;
 
+      print(numOfGames);
+
       for (int j = 0; j < gamesList.length; j++) {
+        gameNames.add(gamesList[j].gameName);
+        gameAreas.add(gamesList[j].storeCode);
+        gameIDs.add(gamesList[j].gameId);
+        gameFromDates.add(gamesList[j].fromDate);
+        gameToDates.add(gamesList[j].toDate);
+        gameVal.add(gamesList[j].gameValue);
         // if (query.rows[j]['game_id'] == gameID) {
         bool nameExists = false;
         for (int i = 0; i < gameNames.length; i++) {
@@ -65,11 +74,11 @@ class _ViewGamesPageState extends State<ViewGamesPage> {
           }
         }
         if (!nameExists) {
-          gameNames.add(gamesList[j].gameName);
-          gameIDs.add(gamesList[j].gameId);
-          gameFromDates.add(gamesList[j].fromDate);
-          gameToDates.add(gamesList[j].toDate);
-          gameVal.add(gamesList[j].gameValue);
+          // gameNames.add(gamesList[j].gameName);
+          // gameIDs.add(gamesList[j].gameId);
+          // gameFromDates.add(gamesList[j].fromDate);
+          // gameToDates.add(gamesList[j].toDate);
+          // gameVal.add(gamesList[j].gameValue);
         }
       }
     } catch (e) {
@@ -110,6 +119,8 @@ class _ViewGamesPageState extends State<ViewGamesPage> {
             itemBuilder: (context, index) {
               String title = gameNames[index].toString();
 
+              String cardTitle = "${gameNames[index]} - ${gameAreas[index]}";
+
               String toDate = gameToDates[index].toString();
 
               String fromDate = gameFromDates[index].toString();
@@ -136,7 +147,7 @@ class _ViewGamesPageState extends State<ViewGamesPage> {
                       arguments: [staffName]);
                 },
                 child: GameCard(
-                  title: title,
+                  title: cardTitle,
                   toDate: toDate.split('T')[0],
                   fromDate: fromDate.split('T')[0],
                   score: "0",
